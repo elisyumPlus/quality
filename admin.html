@@ -183,7 +183,7 @@
         </div>
         <div id="adminLoginError" class="admin-login-error" style="display:none;"></div>
         <div class="admin-login-hint">
-          Bu dosyada şifre ayarlı: <strong>NRUS</strong> .
+          Bu dosyada ayarlı şifre: <strong>nrusplus</strong> (istersen koddan değiştirebilirsin).
         </div>
       </div>
     </div>
@@ -362,7 +362,7 @@
 
     function two(n){return n<10?"0"+n:n;}
 
-    // Admin login (her seferinde)
+    // Admin login (her seferinde, localStorage yok)
     adminLoginBtn.addEventListener("click",()=>{
       adminLoginError.style.display="none";
       const val=adminPassInput.value.trim();
@@ -440,7 +440,7 @@
     });
     clearAnnouncementBtn.addEventListener("click",()=>{announcementTitleInput.value="";announcementTextInput.value="";});
 
-    // Talepler dinle
+    // Status yardımcıları
     function statusBadgeClass(s){
       switch(s){
         case "hazirlaniyor":return"hazirlaniyor";
@@ -462,6 +462,7 @@
       }
     }
 
+    // Talepler dinle
     const qRequests=query(requestsCol,orderBy("createdAt","desc"));
     onSnapshot(qRequests,snapshot=>{
       if(snapshot.empty){
@@ -494,7 +495,9 @@
             </td>
             <td>
               <div class="badge-platform">
-                <span>${d.platform||"-"}</span><span>•</span><span>${d.serviceType||"-"}</span>
+                <span>${d.platform||"-"}</span>
+                <span>•</span>
+                <span>${d.serviceType||"-"}</span>
               </div>
               <div class="small">Adet: ${d.quantity||"-"}, Öncelik: ${d.priority||"Normal"}</div>
             </td>
@@ -512,6 +515,10 @@
                   <option value="tamamlandi" ${st==="tamamlandi"?"selected":""}>Tamamlandı</option>
                 </select>
                 <button class="btn btn-ghost btnUpdateStatus">Güncelle</button>
+                ${st==="hazirlaniyor"
+                  ? '<button class="btn btn-primary btnTakeInProcess">İşleme al</button>'
+                  : ''
+                }
               </div>
             </td>
           </tr>
@@ -522,22 +529,47 @@
     });
 
     function attachStatusEvents(){
-      document.querySelectorAll(".btnUpdateStatus").forEach(btn=>{
-        btn.onclick=async e=>{
-          const tr=e.target.closest("tr");
-          const id=tr.dataset.id;
-          const select=tr.querySelector(".statusSelect");
-          const newStatus=select.value;
-          btn.disabled=true;btn.textContent="Kaydediliyor...";
-          try{
-            await updateDoc(doc(db,"requests",id),{status:newStatus});
-          }catch(err){
-            console.error("Durum güncelleme hata:",err);
-            alert("Durum güncellenirken hata oluştu.");
-          }finally{
-            btn.disabled=false;btn.textContent="Güncelle";
-          }
-        };
+      const rows = document.querySelectorAll("#requestsTbody tr");
+      rows.forEach((tr)=>{
+        const id = tr.dataset.id;
+        const btnUpdate = tr.querySelector(".btnUpdateStatus");
+        const statusSelect = tr.querySelector(".statusSelect");
+        const btnTake = tr.querySelector(".btnTakeInProcess");
+
+        // Normal "Güncelle"
+        if (btnUpdate && statusSelect) {
+          btnUpdate.onclick = async () => {
+            const newStatus = statusSelect.value;
+            btnUpdate.disabled = true;
+            btnUpdate.textContent = "Kaydediliyor...";
+            try{
+              await updateDoc(doc(db,"requests",id),{status:newStatus});
+            }catch(err){
+              console.error("Durum güncelleme hata:",err);
+              alert("Durum güncellenirken hata oluştu.");
+            }finally{
+              btnUpdate.disabled = false;
+              btnUpdate.textContent = "Güncelle";
+            }
+          };
+        }
+
+        // "İşleme al" → hazirlaniyor → gonderiliyor
+        if (btnTake) {
+          btnTake.onclick = async () => {
+            btnTake.disabled = true;
+            btnTake.textContent = "İşleme alınıyor...";
+            try{
+              await updateDoc(doc(db,"requests",id),{status:"gonderiliyor"});
+            }catch(err){
+              console.error("İşleme al hata:",err);
+              alert("Talep işleme alınırken hata oluştu.");
+            }finally{
+              btnTake.disabled = false;
+              btnTake.textContent = "İşleme al";
+            }
+          };
+        }
       });
     }
 
