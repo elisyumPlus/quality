@@ -125,7 +125,7 @@
     .link-cell a{color:#38bdf8;text-decoration:none;word-break:break-all;}
     .small{font-size:11px;color:var(--muted);}
     .users-wrapper{
-      max-height:280px;overflow:auto;border-radius:14px;border:1px solid rgba(31,41,55,0.95);margin-top:4px;
+      max-height:260px;overflow:auto;border-radius:14px;border:1px solid rgba(31,41,55,0.95);margin-top:4px;
     }
     .users-table{width:100%;border-collapse:collapse;font-size:12px;}
     .users-table th,.users-table td{
@@ -143,6 +143,39 @@
     .badge-role-banned{border:1px solid rgba(239,68,68,0.9);background:rgba(239,68,68,0.12);color:#fecaca;}
     .error-text{font-size:12px;color:#fecaca;margin-top:6px;}
     .success-text{font-size:12px;color:#bbf7d0;margin-top:6px;}
+
+    /* Filtre satırı */
+    .filter-row{
+      margin-top:8px;margin-bottom:4px;
+      display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:12px;
+    }
+    .filter-row select{
+      flex:0 0 150px;
+      padding:6px 8px;border-radius:12px;
+      border:1px solid rgba(55,65,81,0.9);
+      background:rgba(15,23,42,0.96);color:var(--text);font-size:12px;
+    }
+
+    /* MESAJLAR TABLOSU */
+    .messages-wrapper{
+      max-height:260px;overflow:auto;border-radius:14px;border:1px solid rgba(31,41,55,0.95);margin-top:4px;
+    }
+    .messages-table{width:100%;border-collapse:collapse;font-size:12px;}
+    .messages-table th,.messages-table td{
+      padding:6px 6px;border-bottom:1px solid rgba(31,41,55,0.95);vertical-align:top;
+    }
+    .messages-table th{
+      text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);
+      position:sticky;top:0;background:#020617;
+    }
+    .badge-msg-unread{
+      padding:2px 7px;border-radius:999px;border:1px solid rgba(59,130,246,0.9);
+      background:rgba(37,99,235,0.18);font-size:11px;color:#dbeafe;
+    }
+    .badge-msg-read{
+      padding:2px 7px;border-radius:999px;border:1px solid rgba(148,163,184,0.9);
+      background:rgba(15,23,42,0.9);font-size:11px;color:#e5e7eb;
+    }
 
     /* ADMIN LOGIN OVERLAY */
     .admin-login-overlay{
@@ -195,7 +228,7 @@
           <div class="brand-title">
             Servis Paneli <span class="brand-pill">Admin</span>
           </div>
-          <div class="brand-subtitle">Talepleri ve kullanıcı rolleri yönet.</div>
+          <div class="brand-subtitle">Talepleri, kullanıcıları ve mesajları yönet.</div>
         </div>
       </div>
       <div class="header-right">
@@ -266,12 +299,24 @@
           </div>
         </div>
 
-        <div class="small">
-          Durumlar:
-          <span class="status-badge hazirlaniyor">Hazırlanıyor</span>
-          <span class="status-badge gonderiliyor">Gönderiliyor</span>
-          <span class="status-badge kontrolde">Kontrolde</span>
-          <span class="status-badge tamamlandi">Tamamlandı</span>
+        <!-- Filtreler -->
+        <div class="filter-row">
+          <span>Filtre:</span>
+          <select id="statusFilter">
+            <option value="all">Tüm durumlar</option>
+            <option value="hazirlaniyor">Hazırlanıyor</option>
+            <option value="gonderiliyor">Gönderiliyor / İşleniyor</option>
+            <option value="kontrolde">Yönetici kontrolünde</option>
+            <option value="tamamlandi">Tamamlandı</option>
+          </select>
+          <select id="platformFilter">
+            <option value="all">Tüm platformlar</option>
+            <option value="TikTok">TikTok</option>
+            <option value="Instagram">Instagram</option>
+            <option value="YouTube">YouTube</option>
+            <option value="X">X (Twitter)</option>
+            <option value="Facebook">Facebook</option>
+          </select>
         </div>
 
         <div class="requests-wrapper">
@@ -281,7 +326,7 @@
                 <th>Kullanıcı</th>
                 <th>Talep</th>
                 <th>Link & Not</th>
-                <th>Durum</th>
+                <th>Durum / İşlem</th>
               </tr>
             </thead>
             <tbody id="requestsTbody">
@@ -316,13 +361,39 @@
         </table>
       </div>
     </section>
+
+    <!-- Özel Mesajlar -->
+    <section class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title"><span class="icon">💬</span> Özel Mesajlar</div>
+          <p class="card-subtitle">Kullanıcıların admine gönderdiği mesajları buradan okuyup yönetebilirsin.</p>
+        </div>
+      </div>
+
+      <div class="messages-wrapper">
+        <table class="messages-table">
+          <thead>
+            <tr>
+              <th>Kullanıcı</th>
+              <th>Konu & Mesaj</th>
+              <th>Tarih / Durum</th>
+              <th>İşlem</th>
+            </tr>
+          </thead>
+          <tbody id="messagesTbody">
+            <tr><td colspan="4" style="padding:10px;">Mesajlar yükleniyor...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
     import {
       getFirestore, collection, doc, updateDoc, onSnapshot, query,
-      orderBy, getDoc, setDoc, serverTimestamp
+      orderBy, getDoc, setDoc, serverTimestamp, deleteDoc
     } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -340,6 +411,7 @@
     const requestsCol = collection(db,"requests");
     const usersCol = collection(db,"users");
     const settingsDocRef = doc(db,"config","settings");
+    const adminMessagesCol = collection(db,"adminMessages");
 
     const serverStatusSelect=document.getElementById("serverStatusSelect");
     const serverStatusMessage=document.getElementById("serverStatusMessage");
@@ -351,8 +423,13 @@
     const clearAnnouncementBtn=document.getElementById("clearAnnouncementBtn");
     const settingsError=document.getElementById("settingsError");
     const settingsSuccess=document.getElementById("settingsSuccess");
+
     const requestsTbody=document.getElementById("requestsTbody");
     const usersTbody=document.getElementById("usersTbody");
+    const messagesTbody=document.getElementById("messagesTbody");
+
+    const statusFilterSelect=document.getElementById("statusFilter");
+    const platformFilterSelect=document.getElementById("platformFilter");
 
     const adminLoginOverlay=document.getElementById("adminLoginOverlay");
     const adminPassInput=document.getElementById("adminPassInput");
@@ -462,18 +539,42 @@
       }
     }
 
-    // Talepler dinle
+    // TALEPLER: cache + filtre
+    let requestsCache = [];
+
     const qRequests=query(requestsCol,orderBy("createdAt","desc"));
     onSnapshot(qRequests,snapshot=>{
-      if(snapshot.empty){
+      requestsCache = [];
+      snapshot.forEach(docSnap=>{
+        requestsCache.push({ id: docSnap.id, data: docSnap.data() });
+      });
+      renderRequests();
+    });
+
+    statusFilterSelect.addEventListener("change",renderRequests);
+    platformFilterSelect.addEventListener("change",renderRequests);
+
+    function renderRequests(){
+      if(!requestsCache.length){
         requestsTbody.innerHTML='<tr><td colspan="4" style="padding:10px;">Henüz talep yok.</td></tr>';
         return;
       }
-      let html="";
-      snapshot.forEach(docSnap=>{
-        const d=docSnap.data();
-        const id=docSnap.id;
-        const st=d.status||"hazirlaniyor";
+      const statusFilter = statusFilterSelect.value;
+      const platformFilter = platformFilterSelect.value;
+
+      let html = "";
+      requestsCache.forEach(item=>{
+        const d = item.data;
+        const id = item.id;
+        const st = d.status || "hazirlaniyor";
+        const platform = d.platform || "";
+        if(statusFilter !== "all"){
+          if(statusFilter === "gonderiliyor"){
+            if(!(st==="gonderiliyor" || st==="isleniyor")) return;
+          }else if(st !== statusFilter) return;
+        }
+        if(platformFilter !== "all" && platform !== platformFilter) return;
+
         const createdAt=d.createdAt?.toDate?d.createdAt.toDate():null;
         let timeText="";
         if(createdAt){
@@ -519,22 +620,33 @@
                   ? '<button class="btn btn-primary btnTakeInProcess">İşleme al</button>'
                   : ''
                 }
+                <button class="btn btn-ghost btnDeleteRequest" style="border-color:rgba(248,113,113,0.8);color:#fecaca;">
+                  Sil
+                </button>
               </div>
             </td>
           </tr>
         `;
       });
-      requestsTbody.innerHTML=html;
-      attachStatusEvents();
-    });
+
+      if(!html){
+        requestsTbody.innerHTML='<tr><td colspan="4" style="padding:10px;">Filtreye uygun talep yok.</td></tr>';
+      }else{
+        requestsTbody.innerHTML = html;
+        attachStatusEvents();
+      }
+    }
 
     function attachStatusEvents(){
       const rows = document.querySelectorAll("#requestsTbody tr");
       rows.forEach((tr)=>{
         const id = tr.dataset.id;
+        if(!id) return;
+
         const btnUpdate = tr.querySelector(".btnUpdateStatus");
         const statusSelect = tr.querySelector(".statusSelect");
         const btnTake = tr.querySelector(".btnTakeInProcess");
+        const btnDelete = tr.querySelector(".btnDeleteRequest");
 
         // Normal "Güncelle"
         if (btnUpdate && statusSelect) {
@@ -567,6 +679,24 @@
             }finally{
               btnTake.disabled = false;
               btnTake.textContent = "İşleme al";
+            }
+          };
+        }
+
+        // Silme
+        if (btnDelete) {
+          btnDelete.onclick = async () => {
+            const ok = confirm("Bu talebi kalıcı olarak silmek istiyor musun?");
+            if(!ok) return;
+            btnDelete.disabled = true;
+            btnDelete.textContent = "Siliniyor...";
+            try{
+              await deleteDoc(doc(db,"requests",id));
+            }catch(err){
+              console.error("Talep silme hata:",err);
+              alert("Talep silinirken hata oluştu.");
+              btnDelete.disabled = false;
+              btnDelete.textContent = "Sil";
             }
           };
         }
@@ -636,6 +766,102 @@
             btn.disabled=false;btn.textContent="Rolü Kaydet";
           }
         };
+      });
+    }
+
+    // Özel Mesajlar dinle
+    const qMessages = query(adminMessagesCol, orderBy("createdAt","desc"));
+    onSnapshot(qMessages, snapshot => {
+      if (snapshot.empty) {
+        messagesTbody.innerHTML = '<tr><td colspan="4" style="padding:10px;">Henüz mesaj yok.</td></tr>';
+        return;
+      }
+      let html = "";
+      snapshot.forEach(docSnap => {
+        const d = docSnap.data();
+        const id = docSnap.id;
+        const createdAt = d.createdAt?.toDate ? d.createdAt.toDate() : null;
+        let timeText = "";
+        if (createdAt) {
+          timeText = `${two(createdAt.getDate())}.${two(createdAt.getMonth()+1)} • ${two(createdAt.getHours())}:${two(createdAt.getMinutes())}`;
+        }
+        const status = d.status || "unread";
+        const statusBadge = status === "unread"
+          ? '<span class="badge-msg-unread">Okunmadı</span>'
+          : '<span class="badge-msg-read">Okundu</span>';
+
+        html += `
+          <tr data-id="${id}">
+            <td>
+              <strong>${d.userName || "Bilinmiyor"}</strong>
+              <div class="small">${d.userId || "-"}</div>
+            </td>
+            <td>
+              <strong>${d.subject || "Konu yok"}</strong>
+              <div class="small" style="margin-top:3px;">${(d.message || "").replace(/\n/g,"<br>")}</div>
+            </td>
+            <td>
+              <div class="small">${timeText || "-"}</div>
+              <div style="margin-top:4px;">${statusBadge}</div>
+            </td>
+            <td>
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <button class="btn btn-ghost btnToggleMsgStatus">
+                  ${status === "unread" ? "Okundu olarak işaretle" : "Tekrar okunmadı yap"}
+                </button>
+                <button class="btn btn-ghost btnDeleteMsg" style="border-color:rgba(248,113,113,0.8);color:#fecaca;">
+                  Mesajı Sil
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+      messagesTbody.innerHTML = html;
+      attachMessageEvents();
+    });
+
+    function attachMessageEvents(){
+      document.querySelectorAll("#messagesTbody tr").forEach(tr=>{
+        const id = tr.dataset.id;
+        if(!id) return;
+        const btnToggle = tr.querySelector(".btnToggleMsgStatus");
+        const btnDelete = tr.querySelector(".btnDeleteMsg");
+
+        if (btnToggle) {
+          btnToggle.onclick = async () => {
+            // mevcut badge'e bakarak karar verelim
+            const badgeUnread = tr.querySelector(".badge-msg-unread");
+            const newStatus = badgeUnread ? "read" : "unread";
+            btnToggle.disabled = true;
+            btnToggle.textContent = "Güncelleniyor...";
+            try{
+              await updateDoc(doc(db,"adminMessages",id),{status:newStatus});
+            }catch(err){
+              console.error("Mesaj durum güncelleme hata:",err);
+              alert("Mesaj durumu güncellenemedi.");
+            }finally{
+              btnToggle.disabled = false;
+            }
+          };
+        }
+
+        if (btnDelete) {
+          btnDelete.onclick = async () => {
+            const ok = confirm("Bu mesajı kalıcı olarak silmek istiyor musun?");
+            if(!ok) return;
+            btnDelete.disabled = true;
+            btnDelete.textContent = "Siliniyor...";
+            try{
+              await deleteDoc(doc(db,"adminMessages",id));
+            }catch(err){
+              console.error("Mesaj silme hata:",err);
+              alert("Mesaj silinirken hata oluştu.");
+              btnDelete.disabled = false;
+              btnDelete.textContent = "Mesajı Sil";
+            }
+          };
+        }
       });
     }
   </script>
