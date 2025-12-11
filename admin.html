@@ -118,6 +118,7 @@
     .status-badge.gonderiliyor{border-color:rgba(129,140,248,0.9);background:rgba(129,140,248,0.17);}
     .status-badge.kontrolde{border-color:rgba(249,115,22,0.9);background:rgba(251,146,60,0.18);}
     .status-badge.tamamlandi{border-color:rgba(34,197,94,0.9);background:rgba(34,197,94,0.16);}
+    .status-badge.reddedildi{border-color:rgba(248,113,113,0.9);background:rgba(248,113,113,0.15);}
     .badge-platform{
       border-radius:999px;padding:2px 7px;border:1px solid rgba(75,85,99,0.9);
       display:inline-flex;gap:4px;align-items:center;
@@ -144,7 +145,6 @@
     .error-text{font-size:12px;color:#fecaca;margin-top:6px;}
     .success-text{font-size:12px;color:#bbf7d0;margin-top:6px;}
 
-    /* Filtre satırı */
     .filter-row{
       margin-top:8px;margin-bottom:4px;
       display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:12px;
@@ -156,7 +156,6 @@
       background:rgba(15,23,42,0.96);color:var(--text);font-size:12px;
     }
 
-    /* MESAJLAR TABLOSU */
     .messages-wrapper{
       max-height:260px;overflow:auto;border-radius:14px;border:1px solid rgba(31,41,55,0.95);margin-top:4px;
     }
@@ -177,7 +176,43 @@
       background:rgba(15,23,42,0.9);font-size:11px;color:#e5e7eb;
     }
 
-    /* ADMIN LOGIN OVERLAY */
+    .stats-grid{
+      display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;font-size:12px;
+    }
+    .stats-grid .metric{
+      padding:6px 9px;border-radius:999px;
+      background:rgba(15,23,42,0.9);
+      border:1px solid rgba(55,65,81,0.9);
+    }
+    .chart-wrapper{
+      margin-top:8px;border-radius:14px;
+      background:rgba(15,23,42,0.95);
+      border:1px solid rgba(31,41,55,0.95);
+      padding:8px 10px;
+      font-size:11px;
+    }
+    .chart-row{
+      display:flex;align-items:center;gap:8px;margin-bottom:4px;
+    }
+    .chart-label{flex:0 0 90px;color:var(--muted);}
+    .chart-bar{
+      flex:1;height:8px;border-radius:999px;
+      background:rgba(15,23,42,0.9);
+      overflow:hidden;
+    }
+    .chart-bar-fill{
+      height:100%;border-radius:999px;
+      background:linear-gradient(90deg,#4f46e5,#22c55e);
+      width:0%;
+      transition:width .25s ease-out;
+    }
+    .chart-bar-fill.haz{background:linear-gradient(90deg,#3b82f6,#6366f1);}
+    .chart-bar-fill.gon{background:linear-gradient(90deg,#6366f1,#a855f7);}
+    .chart-bar-fill.kon{background:linear-gradient(90deg,#f97316,#facc15);}
+    .chart-bar-fill.tam{background:linear-gradient(90deg,#16a34a,#22c55e);}
+    .chart-bar-fill.red{background:linear-gradient(90deg,#ef4444,#fb7185);}
+    .chart-value{flex:0 0 26px;text-align:right;}
+
     .admin-login-overlay{
       position:absolute;inset:0;
       background:radial-gradient(circle at top,rgba(15,23,42,0.96),rgba(15,23,42,0.99));
@@ -205,7 +240,6 @@
 </head>
 <body>
   <div class="app">
-    <!-- Admin login -->
     <div class="admin-login-overlay" id="adminLoginOverlay">
       <div class="admin-login-card">
         <div class="admin-login-title">🔐 Admin Girişi</div>
@@ -216,7 +250,7 @@
         </div>
         <div id="adminLoginError" class="admin-login-error" style="display:none;"></div>
         <div class="admin-login-hint">
-          Bu dosyada ayarlı şifre: <strong>nrusplus</strong> (istersen koddan değiştirebilirsin).
+          Bu dosyada ayarlı şifre: <strong>nrusplus</strong>
         </div>
       </div>
     </div>
@@ -238,7 +272,6 @@
     </header>
 
     <div class="grid">
-      <!-- Sistem Ayarları -->
       <section class="card">
         <div class="card-header">
           <div>
@@ -290,7 +323,6 @@
         <div id="settingsSuccess" class="success-text" style="display:none;"></div>
       </section>
 
-      <!-- Talepler -->
       <section class="card">
         <div class="card-header">
           <div>
@@ -299,7 +331,6 @@
           </div>
         </div>
 
-        <!-- Filtreler -->
         <div class="filter-row">
           <span>Filtre:</span>
           <select id="statusFilter">
@@ -308,6 +339,7 @@
             <option value="gonderiliyor">Gönderiliyor / İşleniyor</option>
             <option value="kontrolde">Yönetici kontrolünde</option>
             <option value="tamamlandi">Tamamlandı</option>
+            <option value="reddedildi">Reddedildi</option>
           </select>
           <select id="platformFilter">
             <option value="all">Tüm platformlar</option>
@@ -337,7 +369,6 @@
       </section>
     </div>
 
-    <!-- Kullanıcı Yönetimi -->
     <section class="card">
       <div class="card-header">
         <div>
@@ -362,7 +393,62 @@
       </div>
     </section>
 
-    <!-- Özel Mesajlar -->
+    <section class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title"><span class="icon">📊</span> İstatistikler</div>
+          <p class="card-subtitle">Taleplerin duruma göre dağılımı.</p>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="metric">Toplam talep: <strong id="stTotal">-</strong></div>
+        <div class="metric">Hazırlanıyor: <strong id="stHaz">-</strong></div>
+        <div class="metric">Gönderiliyor: <strong id="stGon">-</strong></div>
+        <div class="metric">Kontrolde: <strong id="stKon">-</strong></div>
+        <div class="metric">Tamamlandı: <strong id="stTam">-</strong></div>
+        <div class="metric">Reddedildi: <strong id="stRed">-</strong></div>
+      </div>
+
+      <div class="chart-wrapper">
+        <div class="chart-row">
+          <span class="chart-label">Hazırlanıyor</span>
+          <div class="chart-bar">
+            <div id="barHaz" class="chart-bar-fill haz"></div>
+          </div>
+          <span id="valHaz" class="chart-value">0</span>
+        </div>
+        <div class="chart-row">
+          <span class="chart-label">Gönderiliyor</span>
+          <div class="chart-bar">
+            <div id="barGon" class="chart-bar-fill gon"></div>
+          </div>
+          <span id="valGon" class="chart-value">0</span>
+        </div>
+        <div class="chart-row">
+          <span class="chart-label">Kontrolde</span>
+          <div class="chart-bar">
+            <div id="barKon" class="chart-bar-fill kon"></div>
+          </div>
+          <span id="valKon" class="chart-value">0</span>
+        </div>
+        <div class="chart-row">
+          <span class="chart-label">Tamamlandı</span>
+          <div class="chart-bar">
+            <div id="barTam" class="chart-bar-fill tam"></div>
+          </div>
+          <span id="valTam" class="chart-value">0</span>
+        </div>
+        <div class="chart-row">
+          <span class="chart-label">Reddedildi</span>
+          <div class="chart-bar">
+            <div id="barRed" class="chart-bar-fill red"></div>
+          </div>
+          <span id="valRed" class="chart-value">0</span>
+        </div>
+      </div>
+    </section>
+
     <section class="card">
       <div class="card-header">
         <div>
@@ -393,7 +479,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
     import {
       getFirestore, collection, doc, updateDoc, onSnapshot, query,
-      orderBy, getDoc, setDoc, serverTimestamp, deleteDoc
+      orderBy, getDoc, setDoc, serverTimestamp, deleteDoc, addDoc
     } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -412,6 +498,7 @@
     const usersCol = collection(db,"users");
     const settingsDocRef = doc(db,"config","settings");
     const adminMessagesCol = collection(db,"adminMessages");
+    const userNotificationsCol = collection(db,"userNotifications");
 
     const serverStatusSelect=document.getElementById("serverStatusSelect");
     const serverStatusMessage=document.getElementById("serverStatusMessage");
@@ -431,6 +518,13 @@
     const statusFilterSelect=document.getElementById("statusFilter");
     const platformFilterSelect=document.getElementById("platformFilter");
 
+    const stTotal=document.getElementById("stTotal");
+    const stHaz=document.getElementById("stHaz");
+    const stGon=document.getElementById("stGon");
+    const stKon=document.getElementById("stKon");
+    const stTam=document.getElementById("stTam");
+    const stRed=document.getElementById("stRed");
+
     const adminLoginOverlay=document.getElementById("adminLoginOverlay");
     const adminPassInput=document.getElementById("adminPassInput");
     const adminLoginBtn=document.getElementById("adminLoginBtn");
@@ -439,7 +533,6 @@
 
     function two(n){return n<10?"0"+n:n;}
 
-    // Admin login (her seferinde, localStorage yok)
     adminLoginBtn.addEventListener("click",()=>{
       adminLoginError.style.display="none";
       const val=adminPassInput.value.trim();
@@ -457,7 +550,6 @@
     });
     adminPassInput.addEventListener("keyup",e=>{if(e.key==="Enter")adminLoginBtn.click();});
 
-    // Sunucu önizleme
     function updateServerPreview(){
       const v=serverStatusSelect.value;
       serverStatusPreview.classList.remove("online","offline","maintenance");
@@ -470,7 +562,6 @@
     serverStatusSelect.addEventListener("change",updateServerPreview);
     updateServerPreview();
 
-    // Ayarları yükle
     async function loadSettings(){
       try{
         const snap=await getDoc(settingsDocRef);
@@ -488,7 +579,6 @@
     }
     loadSettings();
 
-    // Ayar Kaydet
     saveSettingsBtn.addEventListener("click",async()=>{
       settingsError.style.display="none";settingsSuccess.style.display="none";
       const serverStatus=serverStatusSelect.value;
@@ -517,7 +607,6 @@
     });
     clearAnnouncementBtn.addEventListener("click",()=>{announcementTitleInput.value="";announcementTextInput.value="";});
 
-    // Status yardımcıları
     function statusBadgeClass(s){
       switch(s){
         case "hazirlaniyor":return"hazirlaniyor";
@@ -525,6 +614,7 @@
         case "isleniyor":return"gonderiliyor";
         case "kontrolde":return"kontrolde";
         case "tamamlandi":return"tamamlandi";
+        case "reddedildi":return"reddedildi";
         default:return"";
       }
     }
@@ -535,20 +625,31 @@
         case "isleniyor":return"Gönderiliyor / İşleniyor";
         case "kontrolde":return"Yönetici kontrolünde";
         case "tamamlandi":return"Tamamlandı";
+        case "reddedildi":return"Reddedildi";
         default:return"Bilinmiyor";
       }
     }
 
-    // TALEPLER: cache + filtre
     let requestsCache = [];
+    let statsAll = {haz:0,gon:0,kon:0,tam:0,red:0,total:0};
 
     const qRequests=query(requestsCol,orderBy("createdAt","desc"));
     onSnapshot(qRequests,snapshot=>{
       requestsCache = [];
+      let haz=0,gon=0,kon=0,tam=0,red=0;
       snapshot.forEach(docSnap=>{
-        requestsCache.push({ id: docSnap.id, data: docSnap.data() });
+        const d=docSnap.data();
+        requestsCache.push({ id: docSnap.id, data: d });
+        const st = d.status || "hazirlaniyor";
+        if(st==="hazirlaniyor") haz++;
+        else if(st==="gonderiliyor"||st==="isleniyor") gon++;
+        else if(st==="kontrolde") kon++;
+        else if(st==="tamamlandi") tam++;
+        else if(st==="reddedildi") red++;
       });
+      statsAll = {haz,gon,kon,tam,red,total:haz+gon+kon+tam+red};
       renderRequests();
+      renderAdminStats();
     });
 
     statusFilterSelect.addEventListener("change",renderRequests);
@@ -588,7 +689,7 @@
             : '<span class="badge-role-user">USER</span>';
 
         html+=`
-          <tr data-id="${id}">
+          <tr data-id="${id}" data-user-id="${d.userId||""}" data-user-name="${d.userName||""}">
             <td>
               <strong>${d.userName||"Bilinmiyor"}</strong>
               <div class="small">${timeText||"-"}</div>
@@ -614,12 +715,14 @@
                   <option value="gonderiliyor" ${st==="gonderiliyor"||st==="isleniyor"?"selected":""}>Gönderiliyor / İşleniyor</option>
                   <option value="kontrolde" ${st==="kontrolde"?"selected":""}>Yönetici kontrolünde</option>
                   <option value="tamamlandi" ${st==="tamamlandi"?"selected":""}>Tamamlandı</option>
+                  <option value="reddedildi" ${st==="reddedildi"?"selected":""}>Reddedildi</option>
                 </select>
                 <button class="btn btn-ghost btnUpdateStatus">Güncelle</button>
                 ${st==="hazirlaniyor"
                   ? '<button class="btn btn-primary btnTakeInProcess">İşleme al</button>'
                   : ''
                 }
+                <button class="btn btn-ghost btnNotifyUser">Kullanıcıya not</button>
                 <button class="btn btn-ghost btnDeleteRequest" style="border-color:rgba(248,113,113,0.8);color:#fecaca;">
                   Sil
                 </button>
@@ -643,12 +746,15 @@
         const id = tr.dataset.id;
         if(!id) return;
 
+        const userId = tr.dataset.userId;
+        const userName = tr.dataset.userName;
+
         const btnUpdate = tr.querySelector(".btnUpdateStatus");
         const statusSelect = tr.querySelector(".statusSelect");
         const btnTake = tr.querySelector(".btnTakeInProcess");
         const btnDelete = tr.querySelector(".btnDeleteRequest");
+        const btnNotify = tr.querySelector(".btnNotifyUser");
 
-        // Normal "Güncelle"
         if (btnUpdate && statusSelect) {
           btnUpdate.onclick = async () => {
             const newStatus = statusSelect.value;
@@ -666,7 +772,6 @@
           };
         }
 
-        // "İşleme al" → hazirlaniyor → gonderiliyor
         if (btnTake) {
           btnTake.onclick = async () => {
             btnTake.disabled = true;
@@ -683,7 +788,35 @@
           };
         }
 
-        // Silme
+        if (btnNotify) {
+          btnNotify.onclick = async () => {
+            if (!userId) {
+              alert("Bu talebe bağlı kullanıcı bilgisi bulunamadı.");
+              return;
+            }
+            const note = prompt("Kullanıcıya gönderilecek mesajı yaz:");
+            if (!note || !note.trim()) return;
+            btnNotify.disabled = true;
+            btnNotify.textContent = "Gönderiliyor...";
+            try{
+              await addDoc(userNotificationsCol,{
+                userId,
+                userName: userName || null,
+                requestId: id,
+                message: note.trim(),
+                read: false,
+                createdAt: serverTimestamp()
+              });
+            }catch(err){
+              console.error("Bildirim gönderme hata:",err);
+              alert("Bildirim gönderilirken hata oluştu.");
+            }finally{
+              btnNotify.disabled = false;
+              btnNotify.textContent = "Kullanıcıya not";
+            }
+          };
+        }
+
         if (btnDelete) {
           btnDelete.onclick = async () => {
             const ok = confirm("Bu talebi kalıcı olarak silmek istiyor musun?");
@@ -703,9 +836,33 @@
       });
     }
 
-    // Kullanıcılar dinle
-    const qUsers=query(usersCol,orderBy("createdAt","desc"));
-    onSnapshot(qUsers,snapshot=>{
+    function renderAdminStats(){
+      const total = statsAll.total || 0;
+      stTotal.textContent = total;
+      stHaz.textContent = statsAll.haz;
+      stGon.textContent = statsAll.gon;
+      stKon.textContent = statsAll.kon;
+      stTam.textContent = statsAll.tam;
+      stRed.textContent = statsAll.red;
+
+      const maxVal = Math.max(statsAll.haz,statsAll.gon,statsAll.kon,statsAll.tam,statsAll.red,1);
+
+      function setBar(barId,valId,val){
+        const bar=document.getElementById(barId);
+        const span=document.getElementById(valId);
+        if(!bar||!span)return;
+        const pct = maxVal ? (val/maxVal)*100 : 0;
+        bar.style.width = pct+"%";
+        span.textContent = val;
+      }
+      setBar("barHaz","valHaz",statsAll.haz);
+      setBar("barGon","valGon",statsAll.gon);
+      setBar("barKon","valKon",statsAll.kon);
+      setBar("barTam","valTam",statsAll.tam);
+      setBar("barRed","valRed",statsAll.red);
+    }
+
+    onSnapshot(query(usersCol,orderBy("createdAt","desc")),snapshot=>{
       if(snapshot.empty){
         usersTbody.innerHTML='<tr><td colspan="4" style="padding:10px;">Henüz kullanıcı yok.</td></tr>';
         return;
@@ -769,9 +926,7 @@
       });
     }
 
-    // Özel Mesajlar dinle
-    const qMessages = query(adminMessagesCol, orderBy("createdAt","desc"));
-    onSnapshot(qMessages, snapshot => {
+    onSnapshot(query(adminMessagesCol, orderBy("createdAt","desc")), snapshot => {
       if (snapshot.empty) {
         messagesTbody.innerHTML = '<tr><td colspan="4" style="padding:10px;">Henüz mesaj yok.</td></tr>';
         return;
@@ -830,7 +985,6 @@
 
         if (btnToggle) {
           btnToggle.onclick = async () => {
-            // mevcut badge'e bakarak karar verelim
             const badgeUnread = tr.querySelector(".badge-msg-unread");
             const newStatus = badgeUnread ? "read" : "unread";
             btnToggle.disabled = true;
@@ -842,6 +996,7 @@
               alert("Mesaj durumu güncellenemedi.");
             }finally{
               btnToggle.disabled = false;
+              btnToggle.textContent = newStatus==="read" ? "Tekrar okunmadı yap" : "Okundu olarak işaretle";
             }
           };
         }
