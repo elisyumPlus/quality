@@ -198,6 +198,17 @@
       color: #f9fafb;
     }
 
+    .vip-pill {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(251, 191, 36, 0.8);
+      background: rgba(250, 204, 21, 0.15);
+      color: #facc15;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
     .announcement {
       border-radius: var(--rounded-lg);
       padding: 10px 12px;
@@ -329,51 +340,6 @@
       margin-top: 4px;
       font-size: 13px;
       color: var(--muted);
-    }
-
-    /* İSİM AYAR ALANI */
-    .name-setup {
-      margin-top: 10px;
-      padding: 8px 10px;
-      border-radius: 14px;
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px dashed rgba(148, 163, 184, 0.6);
-      font-size: 13px;
-    }
-    .name-setup-title {
-      font-size: 12px;
-      font-weight: 500;
-      margin-bottom: 4px;
-    }
-    .name-setup-row {
-      display: flex;
-      gap: 8px;
-      margin-top: 4px;
-      flex-wrap: wrap;
-    }
-    .name-setup input {
-      flex: 1 1 140px;
-    }
-    .btn-small {
-      border-radius: 999px;
-      border: none;
-      padding: 7px 12px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      background: linear-gradient(120deg, #4f46e5, #6366f1);
-      color: #fff;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .btn-small:active {
-      transform: translateY(1px);
-    }
-    .name-setup-hint {
-      font-size: 11px;
-      color: var(--muted);
-      margin-top: 4px;
     }
 
     form {
@@ -586,10 +552,121 @@
       color: rgba(148, 163, 184, 0.9);
       margin-bottom: 3px;
     }
+
+    /* LOGIN OVERLAY */
+    .login-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.98));
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 420px;
+      background: rgba(15, 23, 42, 0.98);
+      border-radius: 24px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 18px 18px 16px;
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.85);
+    }
+
+    .login-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .login-sub {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .login-row {
+      margin-top: 12px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .login-row input {
+      flex: 1 1 160px;
+    }
+
+    .btn-login {
+      border-radius: 999px;
+      border: none;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      cursor: pointer;
+      background: linear-gradient(120deg, #4f46e5, #6366f1);
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .btn-login[disabled] {
+      opacity: 0.65;
+      cursor: wait;
+    }
+
+    .login-error {
+      margin-top: 6px;
+      font-size: 12px;
+      color: #fecaca;
+    }
+
+    .login-hint {
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .badge-role {
+      font-size: 11px;
+      margin-left: 4px;
+      color: var(--muted);
+    }
   </style>
 </head>
 <body>
   <div class="app">
+    <!-- LOGIN OVERLAY -->
+    <div class="login-overlay" id="loginOverlay">
+      <div class="login-card">
+        <div class="login-title">
+          <span>🔐 Kullanıcı girişi</span>
+        </div>
+        <div class="login-sub">
+          Sisteme kayıt olmak için sadece ismini yazman yeterli. Aynı isimle tekrar girersen hesabın geri yüklenir.
+        </div>
+
+        <div class="login-row">
+          <input id="loginNameInput" placeholder="Örn: Ahmet" />
+          <button id="loginBtn" class="btn-login">
+            Giriş yap
+          </button>
+        </div>
+
+        <div id="loginError" class="login-error" style="display:none;"></div>
+        <div class="login-hint">
+          VIP rolü, admin tarafından atanır. Banned olan kullanıcılar işlem yapamaz.
+        </div>
+      </div>
+    </div>
+
     <!-- HEADER -->
     <header class="app-header">
       <div class="brand">
@@ -615,6 +692,7 @@
         <div class="user-pill">
           <div class="user-avatar" id="userAvatar">U</div>
           <span id="userNameLabel">Misafir</span>
+          <span id="vipBadge" class="vip-pill" style="display:none;">VIP</span>
         </div>
       </div>
     </header>
@@ -630,7 +708,7 @@
     </section>
 
     <div class="grid">
-      <!-- SOL TARAF: KARŞILAMA + İSİM + FORM -->
+      <!-- SOL TARAF: KARŞILAMA + FORM -->
       <section class="card">
         <div class="card-header">
           <div>
@@ -639,23 +717,12 @@
             </div>
             <p class="card-subtitle">Günün saatine göre dinamik mesaj.</p>
           </div>
+          <span id="roleInfo" class="badge-role"></span>
         </div>
 
         <div class="greeting" id="greetingText">Merhaba!</div>
         <div class="greeting-sub" id="greetingSubText">
           Taleplerini detaylı doldur, biz de süreci şeffaf şekilde takip edelim.
-        </div>
-
-        <!-- İsim Ayar Alanı (prompt yerine bu var) -->
-        <div class="name-setup" id="nameSetup" style="display:none;">
-          <div class="name-setup-title">Sistemde görünecek ismin</div>
-          <div class="name-setup-row">
-            <input id="nameInput" type="text" placeholder="Örn: Ahmet" />
-            <button type="button" class="btn-small" id="saveNameBtn">Kaydet</button>
-          </div>
-          <div class="name-setup-hint">
-            Bu isim üstteki kullanıcı etiketinde ve gönderilen taleplerde görünecek. Bir kere kaydedince tekrar sormaz.
-          </div>
         </div>
 
         <form id="requestForm">
@@ -698,7 +765,7 @@
                 <option value="Normal">Normal</option>
                 <option value="Yüksek">Yüksek</option>
               </select>
-              <div class="hint">Yüksek öncelikte ek not ekleyebilirsin.</div>
+              <div class="hint">VIP kullanıcılar için yoğunluk durumunda öncelik verilebilir.</div>
             </div>
           </div>
 
@@ -737,7 +804,7 @@
             <div class="card-title">
               <span class="icon">🛰️</span> Sunucu & Talepler
             </div>
-            <p class="card-subtitle">Anlık durum ve gönderdiğin talepler.</p>
+            <p class="card-subtitle">Anlık durum ve gönderilen talepler.</p>
           </div>
           <div id="serverStatusPill" class="status-pill">
             <span class="status-dot"></span>
@@ -753,7 +820,7 @@
 
         <div class="small-label" style="margin-top:10px;">Son talepler</div>
         <div class="requests" id="requestsContainer">
-          <div class="request-empty">Henüz bir talep oluşturmadın. Formu doldurarak başlayabilirsin.</div>
+          <div class="request-empty">Henüz bir talep oluşturulmadı.</div>
         </div>
       </section>
     </div>
@@ -767,10 +834,13 @@
     const greetingSubText = document.getElementById("greetingSubText");
     const userNameLabel = document.getElementById("userNameLabel");
     const userAvatar = document.getElementById("userAvatar");
+    const vipBadge = document.getElementById("vipBadge");
+    const roleInfo = document.getElementById("roleInfo");
 
-    const nameSetup = document.getElementById("nameSetup");
-    const nameInput = document.getElementById("nameInput");
-    const saveNameBtn = document.getElementById("saveNameBtn");
+    const loginOverlay = document.getElementById("loginOverlay");
+    const loginNameInput = document.getElementById("loginNameInput");
+    const loginBtn = document.getElementById("loginBtn");
+    const loginError = document.getElementById("loginError");
 
     function formatTwo(n) {
       return n < 10 ? "0" + n : n;
@@ -806,41 +876,6 @@
     setInterval(updateClockAndGreeting, 1000);
     updateClockAndGreeting();
 
-    // ========= KULLANICI İSMİ (prompt YOK) =========
-    let currentName = "Misafir";
-
-    function applyName(name) {
-      currentName = name && name.trim() ? name.trim() : "Misafir";
-      userNameLabel.textContent = currentName;
-      userAvatar.textContent = (currentName[0] || "M").toUpperCase();
-    }
-
-    // LocalStorage'dan çek
-    const savedName = localStorage.getItem("sp_username");
-    if (savedName && savedName.trim() !== "") {
-      applyName(savedName);
-      nameSetup.style.display = "none";
-    } else {
-      applyName("Misafir");
-      nameSetup.style.display = "block";
-    }
-
-    // İsim kaydet butonu
-    function saveName() {
-      const val = nameInput.value.trim();
-      if (!val) return;
-      localStorage.setItem("sp_username", val);
-      applyName(val);
-      nameSetup.style.display = "none";
-    }
-
-    saveNameBtn.addEventListener("click", saveName);
-    nameInput.addEventListener("keyup", (e) => {
-      if (e.key === "Enter") {
-        saveName();
-      }
-    });
-
     // ========= Firebase =========
     import {
       initializeApp
@@ -854,7 +889,8 @@
       query,
       orderBy,
       doc,
-      getDoc
+      getDoc,
+      setDoc
     } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -873,14 +909,163 @@
     const requestsCol = collection(db, "requests");
     const settingsDocRef = doc(db, "config", "settings");
 
-    // ========= FORM GÖNDERME =========
     const requestForm = document.getElementById("requestForm");
     const formError = document.getElementById("formError");
     const submitBtn = document.getElementById("submitBtn");
 
+    // ========= USER STATE =========
+    let currentUser = {
+      id: null,
+      name: "Misafir",
+      role: "user"
+    };
+
+    function slugifyName(name) {
+      return name.trim().toLowerCase().replace(/\s+/g, "_");
+    }
+
+    function applyUserToUI() {
+      userNameLabel.textContent = currentUser.name || "Misafir";
+      userAvatar.textContent = (currentUser.name?.[0] || "M").toUpperCase();
+
+      if (currentUser.role === "vip") {
+        vipBadge.style.display = "inline-flex";
+        roleInfo.textContent = "Rolün: VIP kullanıcı";
+      } else if (currentUser.role === "banned") {
+        vipBadge.style.display = "none";
+        roleInfo.textContent = "Rolün: Yasaklı / işlem yapamaz";
+      } else {
+        vipBadge.style.display = "none";
+        roleInfo.textContent = "Rolün: Standart kullanıcı";
+      }
+
+      if (currentUser.role === "banned") {
+        requestForm.querySelectorAll("input, select, textarea, button[type='submit']")
+          .forEach(el => el.disabled = true);
+        formError.textContent = "Hesabın yönetici tarafından yasaklanmış. İşlem yapamazsın.";
+        formError.style.display = "block";
+      } else {
+        requestForm.querySelectorAll("input, select, textarea, button[type='submit']")
+          .forEach(el => el.disabled = false);
+      }
+    }
+
+    async function loadUserFromFirestore(userId) {
+      const userDocRef = doc(db, "users", userId);
+      const snap = await getDoc(userDocRef);
+      if (!snap.exists()) {
+        throw new Error("User doc not found");
+      }
+      const data = snap.data();
+      currentUser = {
+        id: userId,
+        name: data.name || "Misafir",
+        role: data.role || "user"
+      };
+      localStorage.setItem("sp_user_id", currentUser.id);
+      localStorage.setItem("sp_user_name", currentUser.name);
+      localStorage.setItem("sp_user_role", currentUser.role);
+      applyUserToUI();
+    }
+
+    async function handleLogin(name) {
+      const trimmed = name.trim();
+      if (!trimmed) {
+        throw new Error("Lütfen geçerli bir isim gir.");
+      }
+      const userId = slugifyName(trimmed);
+      const userDocRef = doc(db, "users", userId);
+      const snap = await getDoc(userDocRef);
+
+      if (!snap.exists()) {
+        // yeni kullanıcı
+        await setDoc(userDocRef, {
+          name: trimmed,
+          role: "user",
+          createdAt: serverTimestamp()
+        });
+        currentUser = { id: userId, name: trimmed, role: "user" };
+      } else {
+        const data = snap.data();
+        currentUser = {
+          id: userId,
+          name: data.name || trimmed,
+          role: data.role || "user"
+        };
+      }
+
+      localStorage.setItem("sp_user_id", currentUser.id);
+      localStorage.setItem("sp_user_name", currentUser.name);
+      localStorage.setItem("sp_user_role", currentUser.role);
+      applyUserToUI();
+    }
+
+    // İlk açılışta localStorage kontrolü
+    (async () => {
+      const savedId = localStorage.getItem("sp_user_id");
+      const savedName = localStorage.getItem("sp_user_name");
+      const savedRole = localStorage.getItem("sp_user_role");
+
+      if (savedId && savedName) {
+        // Firestore'dan güncel rolü de çek
+        try {
+          await loadUserFromFirestore(savedId);
+          loginOverlay.style.display = "none";
+        } catch (err) {
+          console.warn("Kayıtlı kullanıcı bulunamadı, tekrar giriş alınacak.", err);
+          loginOverlay.style.display = "flex";
+        }
+      } else {
+        loginOverlay.style.display = "flex";
+      }
+    })();
+
+    loginBtn.addEventListener("click", async () => {
+      loginError.style.display = "none";
+      const name = loginNameInput.value;
+      if (!name.trim()) {
+        loginError.textContent = "Lütfen bir isim gir.";
+        loginError.style.display = "block";
+        return;
+      }
+      loginBtn.disabled = true;
+      loginBtn.textContent = "Kontrol ediliyor...";
+
+      try {
+        await handleLogin(name);
+        loginOverlay.style.display = "none";
+      } catch (err) {
+        console.error(err);
+        loginError.textContent = err.message || "Giriş sırasında bir hata oluştu.";
+        loginError.style.display = "block";
+      } finally {
+        loginBtn.disabled = false;
+        loginBtn.textContent = "Giriş yap";
+      }
+    });
+
+    loginNameInput.addEventListener("keyup", (e) => {
+      if (e.key === "Enter") {
+        loginBtn.click();
+      }
+    });
+
+    // ========= FORM GÖNDERME =========
     requestForm.addEventListener("submit", async (e) => {
       e.preventDefault();
       formError.style.display = "none";
+
+      if (!currentUser.id) {
+        formError.textContent = "Önce kullanıcı girişi yapmalısın.";
+        formError.style.display = "block";
+        loginOverlay.style.display = "flex";
+        return;
+      }
+      if (currentUser.role === "banned") {
+        formError.textContent = "Hesabın yasaklı olduğu için işlem yapamazsın.";
+        formError.style.display = "block";
+        return;
+      }
 
       const platform = document.getElementById("platform").value;
       const serviceType = document.getElementById("serviceType").value;
@@ -900,7 +1085,9 @@
 
       try {
         await addDoc(requestsCol, {
-          userName: currentName,
+          userId: currentUser.id,
+          userName: currentUser.name,
+          userRole: currentUser.role,
           platform,
           serviceType,
           quantity: Number(quantity),
@@ -1012,6 +1199,12 @@
 
       const stClass = statusBadgeClass(d.status);
       const stText = statusText(d.status);
+      const role = d.userRole || "user";
+
+      const roleChip =
+        role === "vip"
+          ? `<span class="badge" style="border-color:rgba(250,204,21,0.8);background:rgba(250,204,21,0.08);color:#facc15;">VIP</span>`
+          : "";
 
       return `
         <div class="request-item">
@@ -1020,6 +1213,7 @@
               <span class="badge badge-platform">${d.platform} • ${d.serviceType}</span>
               <span class="badge">Adet: ${d.quantity || "-"}</span>
               <span class="badge">Öncelik: ${d.priority || "Normal"}</span>
+              ${roleChip}
             </div>
             ${
               d.notes
