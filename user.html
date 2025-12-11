@@ -216,6 +216,7 @@
     .btn-primary[disabled] { opacity: 0.65; cursor: wait; box-shadow: none; }
 
     .error-text { font-size: 12px; color: #fecaca; margin-top: 4px; }
+    .success-text { font-size: 12px; color: #bbf7d0; margin-top: 4px; }
 
     .server-metrics {
       margin-top: 8px; display: flex; gap: 10px; flex-wrap: wrap; font-size: 11px;
@@ -331,7 +332,7 @@
       <div class="login-card">
         <div class="login-title">🔐 Kullanıcı girişi</div>
         <div class="login-sub">
-          Sisteme giriş için sadece ismini yazman yeterli. Aynı isimle tekrar girersen, Data Base’daki hesabın kullanılır.
+          Sisteme giriş için sadece ismini yazman yeterli. Aynı isimle tekrar girersen, Firestore’daki hesabın kullanılır.
         </div>
 
         <div class="login-row">
@@ -405,10 +406,10 @@
               <label for="platform">Platform</label>
               <select id="platform" required>
                 <option value="TikTok">TikTok</option>
-                <option value="Instagram">Instagram /(bakımda)</option>
-                <option value="YouTube">YouTube /(bakımda)</option>
-                <option value="X">X (Twitter) /(bakımda)</option>
-                <option value="Facebook">Facebook /(bakımda)</option>
+                <option value="Instagram">Instagram</option>
+                <option value="YouTube">YouTube</option>
+                <option value="X">X (Twitter)</option>
+                <option value="Facebook">Facebook</option>
               </select>
               <div class="hint">Talep hangi platform için?</div>
             </div>
@@ -489,6 +490,39 @@
         </div>
       </section>
     </div>
+
+    <!-- ADMİNE ÖZEL MESAJ KARTI -->
+    <section class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">
+            <span class="icon">💬</span> Admİne Özel Mesaj
+          </div>
+          <p class="card-subtitle">
+            Öneri, şikayet veya özel notlarını buradan admine iletebilirsin.
+          </p>
+        </div>
+      </div>
+
+      <form id="adminMessageForm">
+        <div class="field">
+          <label for="msgSubject">Konu</label>
+          <input id="msgSubject" placeholder="Örn: Sistem hakkında öneri" />
+        </div>
+        <div class="field">
+          <label for="msgBody">Mesaj</label>
+          <textarea id="msgBody" placeholder="Mesajını buraya yaz..."></textarea>
+          <div class="hint">Bu mesaj sadece admin panelinde görünür, talepler listesinde görünmez.</div>
+        </div>
+
+        <div id="msgError" class="error-text" style="display:none;"></div>
+        <div id="msgSuccess" class="success-text" style="display:none;">Mesajın gönderildi.</div>
+
+        <button type="submit" class="btn-primary" id="msgSendBtn">
+          📩 Mesajı Gönder
+        </button>
+      </form>
+    </section>
   </div>
 
   <script type="module">
@@ -531,6 +565,7 @@
 
     const requestsCol = collection(db,"requests");
     const settingsDocRef = doc(db,"config","settings");
+    const adminMessagesCol = collection(db,"adminMessages");
 
     // Kullanıcı state (sadece RAM'de)
     let currentUser = { id:null, name:"Misafir", role:"user" };
@@ -817,6 +852,62 @@
       }
     }
     loadSettings();
+
+    // Admİne özel mesaj gönderme
+    const adminMessageForm = document.getElementById("adminMessageForm");
+    const msgSubjectInput = document.getElementById("msgSubject");
+    const msgBodyInput = document.getElementById("msgBody");
+    const msgError = document.getElementById("msgError");
+    const msgSuccess = document.getElementById("msgSuccess");
+    const msgSendBtn = document.getElementById("msgSendBtn");
+
+    if (adminMessageForm) {
+      adminMessageForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        msgError.style.display = "none";
+        msgSuccess.style.display = "none";
+
+        if (!currentUser.id) {
+          msgError.textContent = "Önce isminle sisteme giriş yapmalısın.";
+          msgError.style.display = "block";
+          loginOverlay.style.display = "flex";
+          return;
+        }
+
+        const subject = msgSubjectInput.value.trim();
+        const body = msgBodyInput.value.trim();
+
+        if (!body) {
+          msgError.textContent = "Mesaj alanı boş olamaz.";
+          msgError.style.display = "block";
+          return;
+        }
+
+        msgSendBtn.disabled = true;
+        msgSendBtn.textContent = "Gönderiliyor...";
+
+        try {
+          await addDoc(adminMessagesCol, {
+            userId: currentUser.id,
+            userName: currentUser.name,
+            subject,
+            message: body,
+            status: "unread",
+            createdAt: serverTimestamp()
+          });
+          msgSubjectInput.value = "";
+          msgBodyInput.value = "";
+          msgSuccess.style.display = "block";
+        } catch (err) {
+          console.error("Mesaj gönderim hata:", err);
+          msgError.textContent = "Mesaj gönderilirken bir hata oluştu.";
+          msgError.style.display = "block";
+        } finally {
+          msgSendBtn.disabled = false;
+          msgSendBtn.textContent = "📩 Mesajı Gönder";
+        }
+      });
+    }
   </script>
 </body>
 </html>
