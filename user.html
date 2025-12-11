@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Servis Paneli - Kullanıcı</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root {
+      --bg: #070b18;
+      --bg-soft: #0d1224;
+      --bg-softer: #151b30;
+      --accent: #4f46e5;
+      --accent-soft: rgba(79, 70, 229, 0.1);
+      --accent-2: #22c55e;
+      --text: #f9fafb;
+      --muted: #9ca3af;
+      --danger: #ef4444;
+      --border: #1f2937;
+      --rounded-lg: 16px;
+      --rounded-xl: 24px;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.65);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1f2937 0, #020617 45%, #000 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 1120px;
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.92));
+      border-radius: 32px;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      box-shadow: var(--shadow-soft);
+      padding: 24px 22px 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app::before {
+      content: "";
+      position: absolute;
+      inset: -200px;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.06), transparent 55%),
+        radial-gradient(circle at 100% 0%, rgba(129, 140, 248, 0.08), transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px 12px 6px;
+      border-radius: 20px;
+      background: radial-gradient(circle at top left, rgba(79, 70, 229, 0.18), transparent 60%),
+                  rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app-header::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(255, 255, 255, 0.07), transparent 60%);
+      mix-blend-mode: screen;
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      background: conic-gradient(from 200deg, #4f46e5, #22c55e, #ec4899, #4f46e5);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.4), 0 10px 25px rgba(15, 23, 42, 0.9);
+      position: relative;
+    }
+
+    .brand-logo span {
+      font-weight: 700;
+      font-size: 17px;
+      color: #f9fafb;
+      text-shadow: 0 0 12px rgba(15, 23, 42, 0.9);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .brand-pill {
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: #e5e7eb;
+      text-transform: uppercase;
+    }
+
+    .brand-subtitle {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .time-box {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.88);
+      border: 1px solid rgba(148, 163, 184, 0.55);
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #e5e7eb;
+    }
+
+    .time-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.9);
+    }
+
+    .user-pill {
+      font-size: 12px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #e5e7eb;
+    }
+
+    .user-avatar {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0%, #f97316, #4f46e5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: #f9fafb;
+    }
+
+    .announcement {
+      border-radius: var(--rounded-lg);
+      padding: 10px 12px;
+      background: linear-gradient(90deg, rgba(56, 189, 248, 0.18), rgba(129, 140, 248, 0.2));
+      border: 1px solid rgba(56, 189, 248, 0.6);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      color: #e5f5ff;
+    }
+
+    .announcement-icon {
+      margin-top: 2px;
+      font-size: 16px;
+    }
+
+    .announcement small {
+      display: block;
+      color: rgba(226, 232, 240, 0.8);
+      margin-top: 2px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.1fr);
+      gap: 18px;
+      margin-top: 4px;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      border-radius: var(--rounded-xl);
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), #020617);
+      border: 1px solid rgba(31, 41, 55, 0.8);
+      padding: 14px 14px 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: #e5e7eb;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-title span.icon {
+      font-size: 16px;
+    }
+
+    .card-subtitle {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(34, 197, 94, 0.6);
+      color: #bbf7d0;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.9);
+    }
+
+    .status-pill.offline {
+      border-color: rgba(239, 68, 68, 0.65);
+      color: #fecaca;
+    }
+    .status-pill.offline .status-dot {
+      background: #ef4444;
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.9);
+    }
+
+    .server-metrics {
+      margin-top: 8px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 11px;
+    }
+
+    .metric {
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(75, 85, 99, 0.9);
+      color: #e5e7eb;
+    }
+
+    .greeting {
+      margin-top: 6px;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .greeting span {
+      color: #a5b4fc;
+    }
+
+    .greeting-sub {
+      margin-top: 4px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    form {
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 13px;
+    }
+
+    label {
+      font-size: 12px;
+      color: #cbd5f5;
+      margin-bottom: 2px;
+      display: block;
+    }
+
+    .field-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .field {
+      flex: 1 1 140px;
+    }
+
+    select,
+    input,
+    textarea {
+      width: 100%;
+      padding: 8px 9px;
+      border-radius: 12px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.95);
+      color: var(--text);
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.16s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    select:focus,
+    input:focus,
+    textarea:focus {
+      border-color: rgba(129, 140, 248, 0.9);
+      box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.6);
+      background: rgba(15, 23, 42, 0.97);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 70px;
+      max-height: 130px;
+    }
+
+    .hint {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .btn-primary {
+      margin-top: 3px;
+      border: none;
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      background: radial-gradient(circle at 0 0, rgba(250, 250, 250, 0.15), transparent 58%),
+                  linear-gradient(120deg, #4f46e5, #6366f1, #22c55e);
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 14px 30px rgba(79, 70, 229, 0.5);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      align-self: flex-start;
+    }
+
+    .btn-primary span.icon {
+      font-size: 16px;
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px);
+      box-shadow: 0 8px 18px rgba(79, 70, 229, 0.55);
+    }
+
+    .btn-primary[disabled] {
+      opacity: 0.65;
+      cursor: wait;
+      box-shadow: none;
+    }
+
+    .error-text {
+      font-size: 12px;
+      color: #fecaca;
+      margin-top: 4px;
+    }
+
+    .requests {
+      margin-top: 4px;
+      max-height: 330px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .request-empty {
+      font-size: 12px;
+      color: var(--muted);
+      padding: 12px 0 4px;
+    }
+
+    .request-item {
+      border-radius: 18px;
+      border: 1px solid rgba(31, 41, 55, 0.95);
+      background: linear-gradient(130deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.98));
+      padding: 9px 10px 9px;
+      margin-bottom: 7px;
+      display: grid;
+      grid-template-columns: 1.2fr 1.4fr auto;
+      column-gap: 10px;
+      row-gap: 4px;
+      font-size: 12px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 780px) {
+      .request-item {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      color: #e5e7eb;
+    }
+
+    .badge-status-hazirlaniyor {
+      border-color: rgba(59, 130, 246, 0.9);
+      background: rgba(37, 99, 235, 0.18);
+      color: #dbeafe;
+    }
+
+    .badge-status-gonderiliyor {
+      border-color: rgba(129, 140, 248, 0.9);
+      background: rgba(129, 140, 248, 0.17);
+      color: #e0e7ff;
+    }
+
+    .badge-status-kontrol {
+      border-color: rgba(249, 115, 22, 0.9);
+      background: rgba(251, 146, 60, 0.18);
+      color: #ffedd5;
+    }
+
+    .badge-status-tamamlandi {
+      border-color: rgba(34, 197, 94, 0.9);
+      background: rgba(34, 197, 94, 0.16);
+      color: #bbf7d0;
+    }
+
+    .badge-platform {
+      border-color: rgba(148, 163, 184, 0.9);
+    }
+
+    .request-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .request-notes {
+      margin-top: 4px;
+      font-size: 12px;
+      color: #e5e7eb;
+    }
+
+    .request-link a {
+      color: #38bdf8;
+      text-decoration: none;
+      word-break: break-all;
+      font-size: 11px;
+    }
+
+    .request-link a:hover {
+      text-decoration: underline;
+    }
+
+    .request-time {
+      font-size: 11px;
+      color: var(--muted);
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .small-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(148, 163, 184, 0.9);
+      margin-bottom: 3px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- HEADER -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-logo">
+          <span>SP</span>
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">
+            Servis Paneli
+            <span class="brand-pill">User</span>
+          </div>
+          <div class="brand-subtitle">
+            Sosyal medya servis talebi, anlık durum takibi.
+          </div>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <div class="time-box">
+          <div class="time-dot"></div>
+          <span id="clockText">--:--</span>
+        </div>
+        <div class="user-pill">
+          <div class="user-avatar" id="userAvatar">U</div>
+          <span id="userNameLabel">Misafir</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- DUYURU -->
+    <section class="announcement" id="announcementBox" style="display:none;">
+      <div class="announcement-icon">📢</div>
+      <div>
+        <strong id="announcementTitle">Duyuru</strong>
+        <div id="announcementText">Şu an için bir duyuru bulunmamaktadır.</div>
+        <small id="announcementUpdated"></small>
+      </div>
+    </section>
+
+    <div class="grid">
+      <!-- SOL TARAF: KARŞILAMA + FORM -->
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
+              <span class="icon">👋</span> Karşılama
+            </div>
+            <p class="card-subtitle">Günün saatine göre dinamik mesaj.</p>
+          </div>
+        </div>
+
+        <div class="greeting" id="greetingText">Merhaba!</div>
+        <div class="greeting-sub" id="greetingSubText">
+          Taleplerini detaylı doldur, biz de süreci şeffaf şekilde takip edelim.
+        </div>
+
+        <form id="requestForm">
+          <div class="field-row">
+            <div class="field">
+              <label for="platform">Platform</label>
+              <select id="platform" required>
+                <option value="TikTok">TikTok</option>
+                <option value="Instagram">Instagram</option>
+                <option value="YouTube">YouTube</option>
+                <option value="X">X (Twitter)</option>
+                <option value="Facebook">Facebook</option>
+              </select>
+              <div class="hint">Talep hangi platform için?</div>
+            </div>
+
+            <div class="field">
+              <label for="serviceType">Talep türü</label>
+              <select id="serviceType" required>
+                <option value="Beğeni">Beğeni</option>
+                <option value="İzlenme">İzlenme</option>
+                <option value="Takipçi">Takipçi</option>
+                <option value="Yorum">Yorum</option>
+                <option value="Kaydetme">Kaydetme</option>
+              </select>
+              <div class="hint">İstediğin servis türü.</div>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="quantity">Adet / Hedef</label>
+              <input type="number" id="quantity" min="10" step="10" placeholder="Örn: 1000" required />
+              <div class="hint">Tahmini adet (örn. 1000 beğeni).</div>
+            </div>
+
+            <div class="field">
+              <label for="priority">Öncelik</label>
+              <select id="priority">
+                <option value="Normal">Normal</option>
+                <option value="Yüksek">Yüksek</option>
+              </select>
+              <div class="hint">Yüksek öncelikte ek not ekleyebilirsin.</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="link">İçerik linki</label>
+            <input
+              type="url"
+              id="link"
+              placeholder="https:// ..."
+              required
+            />
+            <div class="hint">İşlem yapılacak gönderi / profil linki.</div>
+          </div>
+
+          <div class="field">
+            <label for="notes">Not (opsiyonel)</label>
+            <textarea
+              id="notes"
+              placeholder="Örn: Sadece son videoya izlenme gelsin, eski içeriklere gerek yok."
+            ></textarea>
+          </div>
+
+          <div class="error-text" id="formError" style="display:none;"></div>
+
+          <button class="btn-primary" type="submit" id="submitBtn">
+            <span class="icon">🚀</span>
+            Talebi Gönder
+          </button>
+        </form>
+      </section>
+
+      <!-- SAĞ TARAF: SUNUCU DURUMU + TALEPLER -->
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
+              <span class="icon">🛰️</span> Sunucu & Talepler
+            </div>
+            <p class="card-subtitle">Anlık durum ve gönderdiğin talepler.</p>
+          </div>
+          <div id="serverStatusPill" class="status-pill">
+            <span class="status-dot"></span>
+            <span id="serverStatusText">Durum yükleniyor...</span>
+          </div>
+        </div>
+
+        <div class="server-metrics">
+          <div class="metric" id="metricQueue">Bekleyen talep: -</div>
+          <div class="metric" id="metricInProgress">İşleniyor: -</div>
+          <div class="metric" id="metricCompleted">Tamamlandı: -</div>
+        </div>
+
+        <div class="small-label" style="margin-top:10px;">Son talepler</div>
+        <div class="requests" id="requestsContainer">
+          <div class="request-empty">Henüz bir talep oluşturmadın. Formu doldurarak başlayabilirsin.</div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Firebase & JS -->
+  <script type="module">
+    // ========= SAAT, KARŞILAMA, KULLANICI ADI =========
+    const clockText = document.getElementById("clockText");
+    const greetingText = document.getElementById("greetingText");
+    const greetingSubText = document.getElementById("greetingSubText");
+    const userNameLabel = document.getElementById("userNameLabel");
+    const userAvatar = document.getElementById("userAvatar");
+
+    function formatTwo(n) {
+      return n < 10 ? "0" + n : n;
+    }
+
+    function updateClockAndGreeting() {
+      const now = new Date();
+      const h = now.getHours();
+      const m = now.getMinutes();
+      clockText.textContent = `${formatTwo(h)}:${formatTwo(m)}`;
+
+      let main = "Merhaba!";
+      let sub = "Taleplerini detaylı doldur, biz de süreci şeffaf şekilde takip edelim.";
+
+      if (h >= 5 && h < 12) {
+        main = "Günaydın ☀️";
+        sub = "Sabah erken saatler, işlemler genelde daha hızlı tamamlanır.";
+      } else if (h >= 12 && h < 18) {
+        main = "İyi günler 🌤️";
+        sub = "Öğlen trafiği yoğun olabilir ama talepler sırayla işlenir.";
+      } else if (h >= 18 && h < 23) {
+        main = "İyi akşamlar 🌙";
+        sub = "Akşam talepleri genelde yoğunluk durumuna göre işlenir.";
+      } else {
+        main = "Gece modu 🌌";
+        sub = "Gece gönderilen talepler bir sonraki mesai başlangıcında öncelikli işlenebilir.";
+      }
+
+      greetingText.textContent = main;
+      greetingSubText.textContent = sub;
+    }
+
+    setInterval(updateClockAndGreeting, 1000);
+    updateClockAndGreeting();
+
+    // Basit kullanıcı adı (localStorage kullanımı)
+    const savedName = localStorage.getItem("sp_username");
+    let currentName = savedName || "Misafir";
+    if (!savedName) {
+      const entered = prompt("İsminizi yazabilirsiniz (opsiyonel):") || "Misafir";
+      currentName = entered.trim() || "Misafir";
+      localStorage.setItem("sp_username", currentName);
+    }
+    userNameLabel.textContent = currentName;
+    userAvatar.textContent = (currentName[0] || "U").toUpperCase();
+
+    // ========= Firebase =========
+    import {
+      initializeApp
+    } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      serverTimestamp,
+      onSnapshot,
+      query,
+      orderBy,
+      doc,
+      getDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
+
+    // 🔥 Senin Firebase Config'in
+    const firebaseConfig = {
+      apiKey: "AIzaSyDWfmgssPwMkXRilR4qc4V8gJs2efzumuY",
+      authDomain: "quality-3362.firebaseapp.com",
+      projectId: "quality-3362",
+      storageBucket: "quality-3362.firebasestorage.app",
+      messagingSenderId: "367542295102",
+      appId: "1:367542295102:web:5d482d7434193f1ef14f6f",
+      measurementId: "G-3MBQW29YRD"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const requestsCol = collection(db, "requests");
+    const settingsDocRef = doc(db, "config", "settings");
+
+    // ========= FORM GÖNDERME =========
+    const requestForm = document.getElementById("requestForm");
+    const formError = document.getElementById("formError");
+    const submitBtn = document.getElementById("submitBtn");
+
+    requestForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      formError.style.display = "none";
+
+      const platform = document.getElementById("platform").value;
+      const serviceType = document.getElementById("serviceType").value;
+      const quantity = document.getElementById("quantity").value;
+      const priority = document.getElementById("priority").value;
+      const link = document.getElementById("link").value.trim();
+      const notes = document.getElementById("notes").value.trim();
+
+      if (!link || !platform || !serviceType || !quantity) {
+        formError.textContent = "Lütfen zorunlu alanları doldurun.";
+        formError.style.display = "block";
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Gönderiliyor...";
+
+      try {
+        await addDoc(requestsCol, {
+          userName: currentName,
+          platform,
+          serviceType,
+          quantity: Number(quantity),
+          priority,
+          link,
+          notes,
+          status: "hazirlaniyor", // varsayılan durum
+          createdAt: serverTimestamp()
+        });
+
+        requestForm.reset();
+        formError.style.display = "none";
+      } catch (err) {
+        console.error(err);
+        formError.textContent = "Bir hata oluştu. Lütfen tekrar deneyin.";
+        formError.style.display = "block";
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span class="icon">🚀</span> Talebi Gönder';
+      }
+    });
+
+    // ========= TALEPLERİ LİSTELE (HERKES GÖRÜR) =========
+    const requestsContainer = document.getElementById("requestsContainer");
+    const metricQueue = document.getElementById("metricQueue");
+    const metricInProgress = document.getElementById("metricInProgress");
+    const metricCompleted = document.getElementById("metricCompleted");
+
+    const qRequests = query(requestsCol, orderBy("createdAt", "desc"));
+
+    onSnapshot(qRequests, (snapshot) => {
+      if (snapshot.empty) {
+        requestsContainer.innerHTML = '<div class="request-empty">Henüz bir talep yok.</div>';
+        metricQueue.textContent = "Bekleyen talep: 0";
+        metricInProgress.textContent = "İşleniyor: 0";
+        metricCompleted.textContent = "Tamamlandı: 0";
+        return;
+      }
+
+      let html = "";
+      let countQueue = 0;
+      let countProgress = 0;
+      let countDone = 0;
+
+      snapshot.forEach((docSnap) => {
+        const d = docSnap.data();
+        const status = d.status || "hazirlaniyor";
+
+        if (status === "hazirlaniyor") countQueue++;
+        else if (status === "gonderiliyor" || status === "isleniyor") countProgress++;
+        else if (status === "tamamlandi") countDone++;
+
+        html += renderRequestItem(docSnap.id, d);
+      });
+
+      requestsContainer.innerHTML = html;
+      metricQueue.textContent = `Bekleyen talep: ${countQueue}`;
+      metricInProgress.textContent = `İşleniyor: ${countProgress}`;
+      metricCompleted.textContent = `Tamamlandı: ${countDone}`;
+    });
+
+    function statusBadgeClass(status) {
+      switch (status) {
+        case "hazirlaniyor":
+          return "badge-status-hazirlaniyor";
+        case "gonderiliyor":
+        case "isleniyor":
+          return "badge-status-gonderiliyor";
+        case "kontrolde":
+          return "badge-status-kontrol";
+        case "tamamlandi":
+          return "badge-status-tamamlandi";
+        default:
+          return "";
+      }
+    }
+
+    function statusText(status) {
+      switch (status) {
+        case "hazirlaniyor":
+          return "Hazırlanıyor";
+        case "gonderiliyor":
+        case "isleniyor":
+          return "Gönderiliyor / İşleniyor";
+        case "kontrolde":
+          return "Yönetici kontrolünde";
+        case "tamamlandi":
+          return "Tamamlandı";
+        default:
+          return "Bilinmiyor";
+      }
+    }
+
+    function renderRequestItem(id, d) {
+      const createdAt = d.createdAt?.toDate
+        ? d.createdAt.toDate()
+        : null;
+
+      let timeText = "";
+      if (createdAt) {
+        const day = formatTwo(createdAt.getDate());
+        const month = formatTwo(createdAt.getMonth() + 1);
+        const hour = formatTwo(createdAt.getHours());
+        const minute = formatTwo(createdAt.getMinutes());
+        timeText = `${day}.${month} • ${hour}:${minute}`;
+      } else {
+        timeText = "Tarih bekleniyor...";
+      }
+
+      const stClass = statusBadgeClass(d.status);
+      const stText = statusText(d.status);
+
+      return `
+        <div class="request-item">
+          <div>
+            <div class="request-meta">
+              <span class="badge badge-platform">${d.platform} • ${d.serviceType}</span>
+              <span class="badge">Adet: ${d.quantity || "-"}</span>
+              <span class="badge">Öncelik: ${d.priority || "Normal"}</span>
+            </div>
+            ${
+              d.notes
+                ? `<div class="request-notes">${d.notes}</div>`
+                : ""
+            }
+          </div>
+
+          <div class="request-link">
+            <div class="small-label">Link</div>
+            <a href="${d.link}" target="_blank" rel="noopener noreferrer">${d.link}</a>
+            <div class="small-label" style="margin-top:6px;">Talep sahibi</div>
+            <div>${d.userName || "Bilinmiyor"}</div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+            <span class="badge ${stClass}">
+              ${stText}
+            </span>
+            <div class="request-time">${timeText}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    // ========= AYARLAR / DUYURU / SUNUCU DURUMU =========
+    const serverStatusPill = document.getElementById("serverStatusPill");
+    const serverStatusText = document.getElementById("serverStatusText");
+    const announcementBox = document.getElementById("announcementBox");
+    const announcementTitle = document.getElementById("announcementTitle");
+    const announcementText = document.getElementById("announcementText");
+    const announcementUpdated = document.getElementById("announcementUpdated");
+
+    async function loadSettings() {
+      try {
+        const snap = await getDoc(settingsDocRef);
+        if (!snap.exists()) {
+          announcementBox.style.display = "none";
+          serverStatusText.textContent = "Durum bilinmiyor";
+          serverStatusPill.classList.add("offline");
+          return;
+        }
+        const data = snap.data();
+
+        // Sunucu durumu
+        const status = data.serverStatus || "offline";
+        const msg = data.serverStatusMessage || "";
+        if (status === "online") {
+          serverStatusPill.classList.remove("offline");
+          serverStatusText.textContent = msg || "Sunucu aktif";
+        } else if (status === "maintenance") {
+          serverStatusPill.classList.add("offline");
+          serverStatusText.textContent = msg || "Sunucu bakımda";
+        } else {
+          serverStatusPill.classList.add("offline");
+          serverStatusText.textContent = msg || "Sunucu offline / bakımda";
+        }
+
+        // Duyuru
+        if (data.announcementText) {
+          announcementBox.style.display = "flex";
+          announcementTitle.textContent = data.announcementTitle || "Duyuru";
+          announcementText.textContent = data.announcementText;
+          if (data.announcementUpdatedAt?.toDate) {
+            const dt = data.announcementUpdatedAt.toDate();
+            const d = formatTwo(dt.getDate());
+            const m = formatTwo(dt.getMonth() + 1);
+            const h = formatTwo(dt.getHours());
+            const mm = formatTwo(dt.getMinutes());
+            announcementUpdated.textContent = `Güncellendi: ${d}.${m} • ${h}:${mm}`;
+          } else {
+            announcementUpdated.textContent = "";
+          }
+        } else {
+          announcementBox.style.display = "none";
+        }
+      } catch (err) {
+        console.error("Ayarlar okunamadı", err);
+        serverStatusText.textContent = "Durum okunamadı";
+        serverStatusPill.classList.add("offline");
+      }
+    }
+
+    loadSettings();
+  </script>
+</body>
+</html>
