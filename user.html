@@ -331,6 +331,51 @@
       color: var(--muted);
     }
 
+    /* İSİM AYAR ALANI */
+    .name-setup {
+      margin-top: 10px;
+      padding: 8px 10px;
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px dashed rgba(148, 163, 184, 0.6);
+      font-size: 13px;
+    }
+    .name-setup-title {
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    .name-setup-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+    .name-setup input {
+      flex: 1 1 140px;
+    }
+    .btn-small {
+      border-radius: 999px;
+      border: none;
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(120deg, #4f46e5, #6366f1);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .btn-small:active {
+      transform: translateY(1px);
+    }
+    .name-setup-hint {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
     form {
       margin-top: 8px;
       display: flex;
@@ -585,7 +630,7 @@
     </section>
 
     <div class="grid">
-      <!-- SOL TARAF: KARŞILAMA + FORM -->
+      <!-- SOL TARAF: KARŞILAMA + İSİM + FORM -->
       <section class="card">
         <div class="card-header">
           <div>
@@ -599,6 +644,18 @@
         <div class="greeting" id="greetingText">Merhaba!</div>
         <div class="greeting-sub" id="greetingSubText">
           Taleplerini detaylı doldur, biz de süreci şeffaf şekilde takip edelim.
+        </div>
+
+        <!-- İsim Ayar Alanı (prompt yerine bu var) -->
+        <div class="name-setup" id="nameSetup" style="display:none;">
+          <div class="name-setup-title">Sistemde görünecek ismin</div>
+          <div class="name-setup-row">
+            <input id="nameInput" type="text" placeholder="Örn: Ahmet" />
+            <button type="button" class="btn-small" id="saveNameBtn">Kaydet</button>
+          </div>
+          <div class="name-setup-hint">
+            Bu isim üstteki kullanıcı etiketinde ve gönderilen taleplerde görünecek. Bir kere kaydedince tekrar sormaz.
+          </div>
         </div>
 
         <form id="requestForm">
@@ -704,12 +761,16 @@
 
   <!-- Firebase & JS -->
   <script type="module">
-    // ========= SAAT, KARŞILAMA, KULLANICI ADI =========
+    // ========= SAAT, KARŞILAMA =========
     const clockText = document.getElementById("clockText");
     const greetingText = document.getElementById("greetingText");
     const greetingSubText = document.getElementById("greetingSubText");
     const userNameLabel = document.getElementById("userNameLabel");
     const userAvatar = document.getElementById("userAvatar");
+
+    const nameSetup = document.getElementById("nameSetup");
+    const nameInput = document.getElementById("nameInput");
+    const saveNameBtn = document.getElementById("saveNameBtn");
 
     function formatTwo(n) {
       return n < 10 ? "0" + n : n;
@@ -745,16 +806,40 @@
     setInterval(updateClockAndGreeting, 1000);
     updateClockAndGreeting();
 
-    // Basit kullanıcı adı (localStorage kullanımı)
-    const savedName = localStorage.getItem("sp_username");
-    let currentName = savedName || "Misafir";
-    if (!savedName) {
-      const entered = prompt("İsminizi yazabilirsiniz (opsiyonel):") || "Misafir";
-      currentName = entered.trim() || "Misafir";
-      localStorage.setItem("sp_username", currentName);
+    // ========= KULLANICI İSMİ (prompt YOK) =========
+    let currentName = "Misafir";
+
+    function applyName(name) {
+      currentName = name && name.trim() ? name.trim() : "Misafir";
+      userNameLabel.textContent = currentName;
+      userAvatar.textContent = (currentName[0] || "M").toUpperCase();
     }
-    userNameLabel.textContent = currentName;
-    userAvatar.textContent = (currentName[0] || "U").toUpperCase();
+
+    // LocalStorage'dan çek
+    const savedName = localStorage.getItem("sp_username");
+    if (savedName && savedName.trim() !== "") {
+      applyName(savedName);
+      nameSetup.style.display = "none";
+    } else {
+      applyName("Misafir");
+      nameSetup.style.display = "block";
+    }
+
+    // İsim kaydet butonu
+    function saveName() {
+      const val = nameInput.value.trim();
+      if (!val) return;
+      localStorage.setItem("sp_username", val);
+      applyName(val);
+      nameSetup.style.display = "none";
+    }
+
+    saveNameBtn.addEventListener("click", saveName);
+    nameInput.addEventListener("keyup", (e) => {
+      if (e.key === "Enter") {
+        saveName();
+      }
+    });
 
     // ========= Firebase =========
     import {
@@ -772,7 +857,6 @@
       getDoc
     } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
 
-    // 🔥 Senin Firebase Config'in
     const firebaseConfig = {
       apiKey: "AIzaSyDWfmgssPwMkXRilR4qc4V8gJs2efzumuY",
       authDomain: "quality-3362.firebaseapp.com",
@@ -823,7 +907,7 @@
           priority,
           link,
           notes,
-          status: "hazirlaniyor", // varsayılan durum
+          status: "hazirlaniyor",
           createdAt: serverTimestamp()
         });
 
@@ -839,7 +923,7 @@
       }
     });
 
-    // ========= TALEPLERİ LİSTELE (HERKES GÖRÜR) =========
+    // ========= TALEPLERİ LİSTELE =========
     const requestsContainer = document.getElementById("requestsContainer");
     const metricQueue = document.getElementById("metricQueue");
     const metricInProgress = document.getElementById("metricInProgress");
@@ -980,7 +1064,6 @@
         }
         const data = snap.data();
 
-        // Sunucu durumu
         const status = data.serverStatus || "offline";
         const msg = data.serverStatusMessage || "";
         if (status === "online") {
@@ -994,7 +1077,6 @@
           serverStatusText.textContent = msg || "Sunucu offline / bakımda";
         }
 
-        // Duyuru
         if (data.announcementText) {
           announcementBox.style.display = "flex";
           announcementTitle.textContent = data.announcementTitle || "Duyuru";
