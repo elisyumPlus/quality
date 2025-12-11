@@ -4,596 +4,264 @@
   <meta charset="UTF-8" />
   <title>Servis Paneli - Admin</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <style>
     :root {
       --bg: #020617;
       --card-bg: rgba(15, 23, 42, 0.98);
       --accent: #4f46e5;
-      --accent-soft: rgba(79, 70, 229, 0.12);
       --danger: #ef4444;
-      --success: #22c55e;
       --muted: #9ca3af;
       --border: #1f2937;
       --text: #f9fafb;
     }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:radial-gradient(circle at top,#111827 0,#020617 55%,#000 100%);
+      color:var(--text);min-height:100vh;display:flex;justify-content:center;padding:24px;
     }
-
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #111827 0, #020617 55%, #000 100%);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      padding: 24px;
+    .app{
+      width:100%;max-width:1200px;
+      background:linear-gradient(145deg,rgba(15,23,42,0.98),rgba(15,23,42,0.95));
+      border-radius:32px;border:1px solid rgba(148,163,184,0.18);
+      padding:20px 22px 24px;box-shadow:0 18px 40px rgba(15,23,42,0.65);
+      display:flex;flex-direction:column;gap:16px;position:relative;overflow:hidden;
     }
-
-    .app {
-      width: 100%;
-      max-width: 1200px;
-      background: linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.95));
-      border-radius: 32px;
-      border: 1px solid rgba(148, 163, 184, 0.18);
-      padding: 20px 22px 24px;
-      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.65);
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      position: relative;
-      overflow: hidden;
+    .app-header{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:10px 12px 6px;border-radius:20px;
+      background:radial-gradient(circle at top left,rgba(79,70,229,0.2),transparent 55%),rgba(15,23,42,0.96);
+      border:1px solid rgba(99,102,241,0.4);position:relative;overflow:hidden;
     }
-
-    .app-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 10px 12px 6px;
-      border-radius: 20px;
-      background: radial-gradient(circle at top left, rgba(79, 70, 229, 0.2), transparent 55%),
-                  rgba(15, 23, 42, 0.96);
-      border: 1px solid rgba(99, 102, 241, 0.4);
-      position: relative;
-      overflow: hidden;
+    .brand{display:flex;align-items:center;gap:12px;position:relative;z-index:1;}
+    .brand-logo{
+      width:38px;height:38px;border-radius:14px;
+      background:conic-gradient(from 200deg,#4f46e5,#22c55e,#ec4899,#4f46e5);
+      display:inline-flex;align-items:center;justify-content:center;
     }
-
-    .app-header::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(125deg, rgba(255, 255, 255, 0.07), transparent 60%);
-      mix-blend-mode: screen;
-      opacity: 0.8;
-      pointer-events: none;
+    .brand-logo span{font-weight:700;font-size:17px;}
+    .brand-text{display:flex;flex-direction:column;gap:2px;}
+    .brand-title{font-size:18px;font-weight:600;display:flex;align-items:center;gap:6px;}
+    .brand-pill{
+      font-size:11px;padding:2px 7px;border-radius:999px;
+      border:1px solid rgba(248,250,252,0.6);text-transform:uppercase;
     }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      position: relative;
-      z-index: 1;
+    .brand-subtitle{font-size:12px;color:var(--muted);}
+    .header-right{display:flex;align-items:center;gap:10px;font-size:12px;z-index:1;}
+    .badge-online{
+      display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border-radius:999px;
+      border:1px solid rgba(34,197,94,0.8);background:rgba(22,163,74,0.15);
     }
-
-    .brand-logo {
-      width: 38px;
-      height: 38px;
-      border-radius: 14px;
-      background: conic-gradient(from 200deg, #4f46e5, #22c55e, #ec4899, #4f46e5);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.4), 0 10px 25px rgba(15, 23, 42, 0.9);
-      position: relative;
+    .dot{width:8px;height:8px;border-radius:999px;background:#22c55e;}
+    .admin-tag{
+      padding:5px 9px;border-radius:999px;border:1px solid rgba(148,163,184,0.8);
+      background:rgba(15,23,42,0.9);
     }
-
-    .brand-logo span {
-      font-weight: 700;
-      font-size: 17px;
-      color: #f9fafb;
-      text-shadow: 0 0 12px rgba(15, 23, 42, 0.9);
+    .grid{
+      display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1.6fr);
+      gap:14px;margin-top:4px;
     }
-
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
+    @media(max-width:980px){.grid{grid-template-columns:1fr;}}
+    .card{
+      border-radius:22px;background:var(--card-bg);
+      border:1px solid var(--border);padding:14px 14px 16px;
     }
-
-    .brand-title {
-      font-size: 18px;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+    .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+    .card-title{font-size:14px;text-transform:uppercase;letter-spacing:.04em;display:flex;align-items:center;gap:8px;}
+    .card-title .icon{font-size:18px;}
+    .card-subtitle{font-size:12px;color:var(--muted);}
+    label{font-size:12px;color:#cbd5f5;margin-bottom:3px;display:block;}
+    .field{margin-bottom:8px;}
+    textarea,input,select{
+      width:100%;padding:8px 9px;border-radius:12px;border:1px solid rgba(55,65,81,0.9);
+      background:rgba(15,23,42,0.96);color:var(--text);font-size:13px;outline:none;
     }
-
-    .brand-pill {
-      font-size: 11px;
-      padding: 2px 7px;
-      border-radius: 999px;
-      border: 1px solid rgba(248, 250, 252, 0.6);
-      color: #e5e7eb;
-      text-transform: uppercase;
+    textarea{resize:vertical;min-height:70px;max-height:130px;}
+    .hint{font-size:11px;color:var(--muted);margin-top:2px;}
+    .btn{
+      border-radius:999px;border:none;padding:8px 13px;font-size:12px;font-weight:600;
+      text-transform:uppercase;letter-spacing:.04em;cursor:pointer;
+      display:inline-flex;align-items:center;gap:6px;
     }
-
-    .brand-subtitle {
-      font-size: 12px;
-      color: var(--muted);
+    .btn-primary{
+      background:linear-gradient(120deg,#4f46e5,#6366f1,#22c55e);color:white;
     }
-
-    .header-right {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 12px;
+    .btn-ghost{
+      background:transparent;color:var(--muted);border:1px solid rgba(75,85,99,0.9);
     }
-
-    .badge-online {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(34, 197, 94, 0.8);
-      background: rgba(22, 163, 74, 0.15);
-      color: #bbf7d0;
+    .btn[disabled]{opacity:.7;cursor:wait;}
+    .status-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;}
+    .status-pill{
+      font-size:11px;padding:4px 8px;border-radius:999px;border:1px solid rgba(75,85,99,0.9);
+      display:inline-flex;gap:6px;align-items:center;
     }
-
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 10px rgba(34, 197, 94, 0.9);
+    .status-pill.online{border-color:rgba(34,197,94,0.9);background:rgba(22,163,74,0.18);}
+    .status-pill.offline{border-color:rgba(239,68,68,0.9);background:rgba(248,113,113,0.16);}
+    .status-pill.maintenance{border-color:rgba(249,115,22,0.9);background:rgba(251,146,60,0.16);}
+    .server-last-updated{font-size:11px;color:var(--muted);margin-top:4px;}
+    .requests-wrapper{
+      max-height:420px;overflow:auto;border-radius:14px;border:1px solid rgba(31,41,55,0.95);margin-top:4px;
     }
-
-    .admin-tag {
-      padding: 5px 9px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.8);
-      background: rgba(15, 23, 42, 0.9);
-      color: #e5e7eb;
+    .requests-table{width:100%;border-collapse:collapse;font-size:12px;}
+    .requests-table th,.requests-table td{
+      padding:6px 6px;border-bottom:1px solid rgba(31,41,55,0.95);vertical-align:top;
     }
-
-    .grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.6fr);
-      gap: 14px;
-      margin-top: 4px;
+    .requests-table th{
+      text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);
+      position:sticky;top:0;background:#020617;
     }
-
-    @media (max-width: 980px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
+    .status-badge{
+      display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:999px;
+      border:1px solid rgba(55,65,81,0.9);font-size:11px;
     }
-
-    .card {
-      border-radius: 22px;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      padding: 14px 14px 16px;
+    .status-badge.hazirlaniyor{border-color:rgba(59,130,246,0.9);background:rgba(37,99,235,0.18);}
+    .status-badge.gonderiliyor{border-color:rgba(129,140,248,0.9);background:rgba(129,140,248,0.17);}
+    .status-badge.kontrolde{border-color:rgba(249,115,22,0.9);background:rgba(251,146,60,0.18);}
+    .status-badge.tamamlandi{border-color:rgba(34,197,94,0.9);background:rgba(34,197,94,0.16);}
+    .badge-platform{
+      border-radius:999px;padding:2px 7px;border:1px solid rgba(75,85,99,0.9);
+      display:inline-flex;gap:4px;align-items:center;
     }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
+    .link-cell a{color:#38bdf8;text-decoration:none;word-break:break-all;}
+    .small{font-size:11px;color:var(--muted);}
+    .users-wrapper{
+      max-height:280px;overflow:auto;border-radius:14px;border:1px solid rgba(31,41,55,0.95);margin-top:4px;
     }
-
-    .card-title {
-      font-size: 14px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .users-table{width:100%;border-collapse:collapse;font-size:12px;}
+    .users-table th,.users-table td{
+      padding:6px 6px;border-bottom:1px solid rgba(31,41,55,0.95);vertical-align:top;
     }
-
-    .card-title span.icon {
-      font-size: 18px;
+    .users-table th{
+      text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);
+      position:sticky;top:0;background:#020617;
     }
-
-    .card-subtitle {
-      font-size: 12px;
-      color: var(--muted);
+    .badge-role-user,.badge-role-vip,.badge-role-banned{
+      padding:2px 7px;border-radius:999px;font-size:11px;
     }
+    .badge-role-user{border:1px solid rgba(148,163,184,0.9);}
+    .badge-role-vip{border:1px solid rgba(250,204,21,0.9);background:rgba(250,204,21,0.12);color:#facc15;}
+    .badge-role-banned{border:1px solid rgba(239,68,68,0.9);background:rgba(239,68,68,0.12);color:#fecaca;}
+    .error-text{font-size:12px;color:#fecaca;margin-top:6px;}
+    .success-text{font-size:12px;color:#bbf7d0;margin-top:6px;}
 
-    label {
-      font-size: 12px;
-      color: #cbd5f5;
-      margin-bottom: 3px;
-      display: block;
+    /* ADMIN LOGIN OVERLAY */
+    .admin-login-overlay{
+      position:absolute;inset:0;
+      background:radial-gradient(circle at top,rgba(15,23,42,0.96),rgba(15,23,42,0.99));
+      backdrop-filter:blur(10px);
+      display:flex;align-items:center;justify-content:center;z-index:100;
     }
-
-    .field {
-      margin-bottom: 8px;
+    .admin-login-card{
+      width:100%;max-width:400px;background:rgba(15,23,42,0.98);
+      border-radius:24px;border:1px solid rgba(148,163,184,0.5);
+      padding:18px 18px 16px;box-shadow:0 22px 40px rgba(15,23,42,0.9);
     }
-
-    textarea,
-    input,
-    select {
-      width: 100%;
-      padding: 8px 9px;
-      border-radius: 12px;
-      border: 1px solid rgba(55, 65, 81, 0.9);
-      background: rgba(15, 23, 42, 0.96);
-      color: var(--text);
-      font-size: 13px;
-      outline: none;
-      transition: border-color 0.16s ease, box-shadow 0.18s ease, background 0.18s ease;
+    .admin-login-title{font-size:18px;font-weight:600;margin-bottom:4px;}
+    .admin-login-sub{font-size:13px;color:var(--muted);}
+    .admin-login-row{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;}
+    .admin-login-row input{flex:1 1 160px;}
+    .btn-admin-login{
+      border-radius:999px;border:none;padding:8px 14px;font-size:13px;font-weight:600;
+      letter-spacing:.04em;text-transform:uppercase;cursor:pointer;
+      background:linear-gradient(120deg,#4f46e5,#6366f1);color:white;
     }
-
-    textarea:focus,
-    input:focus,
-    select:focus {
-      border-color: rgba(129, 140, 248, 0.9);
-      box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.6);
-      background: rgba(15, 23, 42, 0.97);
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 70px;
-      max-height: 130px;
-    }
-
-    .hint {
-      font-size: 11px;
-      color: var(--muted);
-      margin-top: 2px;
-    }
-
-    .btn {
-      border-radius: 999px;
-      border: none;
-      padding: 8px 13px;
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .btn-primary {
-      background: linear-gradient(120deg, #4f46e5, #6366f1, #22c55e);
-      color: white;
-      box-shadow: 0 12px 26px rgba(79, 70, 229, 0.55);
-    }
-
-    .btn-primary:active {
-      transform: translateY(1px);
-      box-shadow: 0 8px 18px rgba(79, 70, 229, 0.55);
-    }
-
-    .btn-ghost {
-      background: transparent;
-      color: var(--muted);
-      border: 1px solid rgba(75, 85, 99, 0.9);
-    }
-
-    .btn[disabled] {
-      opacity: 0.7;
-      cursor: wait;
-      box-shadow: none;
-    }
-
-    .status-row {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 6px;
-    }
-
-    .status-pill {
-      font-size: 11px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(75, 85, 99, 0.9);
-      display: inline-flex;
-      gap: 6px;
-      align-items: center;
-    }
-
-    .status-pill.online {
-      border-color: rgba(34, 197, 94, 0.9);
-      background: rgba(22, 163, 74, 0.18);
-      color: #bbf7d0;
-    }
-
-    .status-pill.offline {
-      border-color: rgba(239, 68, 68, 0.9);
-      background: rgba(248, 113, 113, 0.16);
-      color: #fee2e2;
-    }
-
-    .status-pill.maintenance {
-      border-color: rgba(249, 115, 22, 0.9);
-      background: rgba(251, 146, 60, 0.16);
-      color: #ffedd5;
-    }
-
-    .server-last-updated {
-      font-size: 11px;
-      color: var(--muted);
-      margin-top: 4px;
-    }
-
-    .requests-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-      font-size: 12px;
-    }
-
-    .requests-table th,
-    .requests-table td {
-      padding: 6px 6px;
-      border-bottom: 1px solid rgba(31, 41, 55, 0.95);
-      vertical-align: top;
-    }
-
-    .requests-table th {
-      text-align: left;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--muted);
-      position: sticky;
-      top: 0;
-      background: #020617;
-      z-index: 2;
-    }
-
-    .requests-wrapper {
-      max-height: 420px;
-      overflow: auto;
-      border-radius: 14px;
-      border: 1px solid rgba(31, 41, 55, 0.95);
-      margin-top: 4px;
-    }
-
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 2px 7px;
-      border-radius: 999px;
-      border: 1px solid rgba(55, 65, 81, 0.9);
-      font-size: 11px;
-    }
-
-    .status-badge.hazirlaniyor {
-      border-color: rgba(59, 130, 246, 0.9);
-      background: rgba(37, 99, 235, 0.18);
-      color: #dbeafe;
-    }
-
-    .status-badge.gonderiliyor {
-      border-color: rgba(129, 140, 248, 0.9);
-      background: rgba(129, 140, 248, 0.17);
-      color: #e0e7ff;
-    }
-
-    .status-badge.kontrolde {
-      border-color: rgba(249, 115, 22, 0.9);
-      background: rgba(251, 146, 60, 0.18);
-      color: #ffedd5;
-    }
-
-    .status-badge.tamamlandi {
-      border-color: rgba(34, 197, 94, 0.9);
-      background: rgba(34, 197, 94, 0.16);
-      color: #bbf7d0;
-    }
-
-    .badge-platform {
-      border-radius: 999px;
-      padding: 2px 7px;
-      border: 1px solid rgba(75, 85, 99, 0.9);
-      display: inline-flex;
-      gap: 4px;
-      align-items: center;
-    }
-
-    .link-cell a {
-      color: #38bdf8;
-      text-decoration: none;
-      word-break: break-all;
-    }
-
-    .link-cell a:hover {
-      text-decoration: underline;
-    }
-
-    .small {
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .error-text {
-      font-size: 12px;
-      color: #fecaca;
-      margin-top: 6px;
-    }
-
-    .success-text {
-      font-size: 12px;
-      color: #bbf7d0;
-      margin-top: 6px;
-    }
-
-    /* USERS CARD */
-    .users-wrapper {
-      max-height: 280px;
-      overflow: auto;
-      border-radius: 14px;
-      border: 1px solid rgba(31, 41, 55, 0.95);
-      margin-top: 4px;
-    }
-
-    .users-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 12px;
-    }
-
-    .users-table th,
-    .users-table td {
-      padding: 6px 6px;
-      border-bottom: 1px solid rgba(31, 41, 55, 0.95);
-      vertical-align: top;
-    }
-
-    .users-table th {
-      text-align: left;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--muted);
-      position: sticky;
-      top: 0;
-      background: #020617;
-    }
-
-    .badge-role-user {
-      padding: 2px 7px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.9);
-      font-size: 11px;
-      color: #e5e7eb;
-    }
-
-    .badge-role-vip {
-      padding: 2px 7px;
-      border-radius: 999px;
-      border: 1px solid rgba(250, 204, 21, 0.9);
-      font-size: 11px;
-      color: #facc15;
-      background: rgba(250, 204, 21, 0.12);
-    }
-
-    .badge-role-banned {
-      padding: 2px 7px;
-      border-radius: 999px;
-      border: 1px solid rgba(239, 68, 68, 0.9);
-      font-size: 11px;
-      color: #fecaca;
-      background: rgba(239, 68, 68, 0.12);
-    }
+    .btn-admin-login[disabled]{opacity:.7;cursor:wait;}
+    .admin-login-error{margin-top:6px;font-size:12px;color:#fecaca;}
+    .admin-login-hint{margin-top:6px;font-size:11px;color:var(--muted);}
   </style>
 </head>
 <body>
   <div class="app">
-    <header class="app-header">
-      <div class="brand">
-        <div class="brand-logo">
-          <span>SP</span>
+    <!-- Admin login -->
+    <div class="admin-login-overlay" id="adminLoginOverlay">
+      <div class="admin-login-card">
+        <div class="admin-login-title">🔐 Admin Girişi</div>
+        <div class="admin-login-sub">Admin paneline erişmek için şifreyi gir.</div>
+        <div class="admin-login-row">
+          <input id="adminPassInput" type="password" placeholder="Admin şifresi" />
+          <button id="adminLoginBtn" class="btn-admin-login">Giriş yap</button>
         </div>
-        <div class="brand-text">
-          <div class="brand-title">
-            Servis Paneli
-            <span class="brand-pill">Admin</span>
-          </div>
-          <div class="brand-subtitle">
-            Talepleri ve kullanıcı rolleri yönet.
-          </div>
+        <div id="adminLoginError" class="admin-login-error" style="display:none;"></div>
+        <div class="admin-login-hint">
+          Bu dosyada ayarlı şifre: <strong>nrusplus</strong> (istersen koddan değiştirebilirsin).
         </div>
       </div>
+    </div>
 
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-logo"><span>SP</span></div>
+        <div class="brand-text">
+          <div class="brand-title">
+            Servis Paneli <span class="brand-pill">Admin</span>
+          </div>
+          <div class="brand-subtitle">Talepleri ve kullanıcı rolleri yönet.</div>
+        </div>
+      </div>
       <div class="header-right">
-        <div class="badge-online" id="adminOnlineBadge">
-          <span class="dot"></span> Panel aktif
-        </div>
-        <div class="admin-tag">
-          Yönetici hesabı
-        </div>
+        <div class="badge-online"><span class="dot"></span> Panel aktif</div>
+        <div class="admin-tag">Yönetici hesabı</div>
       </div>
     </header>
 
     <div class="grid">
-      <!-- Sol: Sunucu & Duyuru Ayarları -->
+      <!-- Sistem Ayarları -->
       <section class="card">
         <div class="card-header">
           <div>
-            <div class="card-title">
-              <span class="icon">🛠️</span> Sistem Ayarları
-            </div>
+            <div class="card-title"><span class="icon">🛠️</span> Sistem Ayarları</div>
             <p class="card-subtitle">Sunucu durumu ve duyuruları buradan güncelleyebilirsin.</p>
           </div>
         </div>
 
         <div class="field">
-          <label>Sunucu durumunu seç</label>
+          <label>Sunucu durumu</label>
           <select id="serverStatusSelect">
             <option value="online">Online</option>
             <option value="offline">Offline</option>
             <option value="maintenance">Bakım modunda</option>
           </select>
-          <div class="hint">Kullanıcı tarafındaki sunucu durumuna direkt yansır.</div>
+          <div class="hint">User tarafına direkt yansır.</div>
         </div>
 
         <div class="field">
           <label>Sunucu durum mesajı</label>
-          <textarea id="serverStatusMessage" placeholder="Örn: Şu an tüm sistemler aktif. Yoğunluk normal seviyede."></textarea>
+          <textarea id="serverStatusMessage" placeholder="Örn: Şu an tüm sistemler aktif."></textarea>
         </div>
 
         <div class="status-row">
           <div id="serverStatusPreview" class="status-pill online">
-            <span class="dot"></span>
-            <span>Online</span>
+            <span class="dot"></span><span>Online</span>
           </div>
         </div>
-
         <div class="server-last-updated" id="serverLastUpdated">Son güncelleme: -</div>
 
-        <hr style="border-color: rgba(31,41,55,0.9); margin:10px 0;" />
+        <hr style="border-color:rgba(31,41,55,0.9);margin:10px 0;" />
 
         <div class="field">
           <label>Duyuru başlığı</label>
           <input id="announcementTitleInput" placeholder="Örn: Sistem Bakımı" />
         </div>
-
         <div class="field">
           <label>Duyuru metni</label>
-          <textarea id="announcementTextInput" placeholder="Örn: Bu akşam 23:00 - 01:00 arası bakım çalışması yapılacaktır."></textarea>
-          <div class="hint">Boş bırakırsan kullanıcı tarafında duyuru kutusu gösterilmez.</div>
+          <textarea id="announcementTextInput" placeholder="Örn: Bu akşam 23:00 - 01:00 bakımdan dolayı kapalı."></textarea>
+          <div class="hint">Boş bırakırsan user tarafında duyuru kutusu çıkmaz.</div>
         </div>
 
-        <div style="display:flex; gap:8px; margin-top:6px; flex-wrap:wrap;">
-          <button class="btn btn-primary" id="saveSettingsBtn">
-            💾 Ayarları Kaydet
-          </button>
-          <button class="btn btn-ghost" id="clearAnnouncementBtn">
-            🧹 Duyuruyu Temizle
-          </button>
+        <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;">
+          <button class="btn btn-primary" id="saveSettingsBtn">💾 Ayarları Kaydet</button>
+          <button class="btn btn-ghost" id="clearAnnouncementBtn">🧹 Duyuruyu Temizle</button>
         </div>
 
         <div id="settingsError" class="error-text" style="display:none;"></div>
         <div id="settingsSuccess" class="success-text" style="display:none;"></div>
       </section>
 
-      <!-- Sağ: Talepler -->
+      <!-- Talepler -->
       <section class="card">
         <div class="card-header">
           <div>
-            <div class="card-title">
-              <span class="icon">📋</span> Kullanıcı Talepleri
-            </div>
+            <div class="card-title"><span class="icon">📋</span> Kullanıcı Talepleri</div>
             <p class="card-subtitle">Durumları değiştirerek süreci yönetebilirsin.</p>
           </div>
         </div>
@@ -607,7 +275,7 @@
         </div>
 
         <div class="requests-wrapper">
-          <table class="requests-table" id="requestsTable">
+          <table class="requests-table">
             <thead>
               <tr>
                 <th>Kullanıcı</th>
@@ -617,9 +285,7 @@
               </tr>
             </thead>
             <tbody id="requestsTbody">
-              <tr>
-                <td colspan="4" style="padding:10px;">Talepler yükleniyor...</td>
-              </tr>
+              <tr><td colspan="4" style="padding:10px;">Talepler yükleniyor...</td></tr>
             </tbody>
           </table>
         </div>
@@ -630,15 +296,10 @@
     <section class="card">
       <div class="card-header">
         <div>
-          <div class="card-title">
-            <span class="icon">👤</span> Kullanıcı Yönetimi
-          </div>
-          <p class="card-subtitle">
-            İsimle giriş yapan kullanıcılar burada listelenir. Rol ataması yaparak VIP veya yasaklı durumunu ayarlayabilirsin.
-          </p>
+          <div class="card-title"><span class="icon">👤</span> Kullanıcı Yönetimi</div>
+          <p class="card-subtitle">İsimle giren kullanıcılar burada listelenir. Rol ataması yapabilirsin.</p>
         </div>
       </div>
-
       <div class="users-wrapper">
         <table class="users-table">
           <thead>
@@ -650,31 +311,18 @@
             </tr>
           </thead>
           <tbody id="usersTbody">
-            <tr>
-              <td colspan="4" style="padding:10px;">Kullanıcılar yükleniyor...</td>
-            </tr>
+            <tr><td colspan="4" style="padding:10px;">Kullanıcılar yükleniyor...</td></tr>
           </tbody>
         </table>
       </div>
     </section>
   </div>
 
-  <!-- Firebase & JS -->
   <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
     import {
-      initializeApp
-    } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
-    import {
-      getFirestore,
-      collection,
-      doc,
-      updateDoc,
-      onSnapshot,
-      query,
-      orderBy,
-      getDoc,
-      setDoc,
-      serverTimestamp
+      getFirestore, collection, doc, updateDoc, onSnapshot, query,
+      orderBy, getDoc, setDoc, serverTimestamp
     } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -686,305 +334,248 @@
       appId: "1:367542295102:web:5d482d7434193f1ef14f6f",
       measurementId: "G-3MBQW29YRD"
     };
-
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const requestsCol = collection(db, "requests");
-    const settingsDocRef = doc(db, "config", "settings");
-    const usersCol = collection(db, "users");
+    const requestsCol = collection(db,"requests");
+    const usersCol = collection(db,"users");
+    const settingsDocRef = doc(db,"config","settings");
 
-    const serverStatusSelect = document.getElementById("serverStatusSelect");
-    const serverStatusMessage = document.getElementById("serverStatusMessage");
-    const serverStatusPreview = document.getElementById("serverStatusPreview");
-    const serverLastUpdated = document.getElementById("serverLastUpdated");
-    const announcementTitleInput = document.getElementById("announcementTitleInput");
-    const announcementTextInput = document.getElementById("announcementTextInput");
-    const saveSettingsBtn = document.getElementById("saveSettingsBtn");
-    const clearAnnouncementBtn = document.getElementById("clearAnnouncementBtn");
-    const settingsError = document.getElementById("settingsError");
-    const settingsSuccess = document.getElementById("settingsSuccess");
+    const serverStatusSelect=document.getElementById("serverStatusSelect");
+    const serverStatusMessage=document.getElementById("serverStatusMessage");
+    const serverStatusPreview=document.getElementById("serverStatusPreview");
+    const serverLastUpdated=document.getElementById("serverLastUpdated");
+    const announcementTitleInput=document.getElementById("announcementTitleInput");
+    const announcementTextInput=document.getElementById("announcementTextInput");
+    const saveSettingsBtn=document.getElementById("saveSettingsBtn");
+    const clearAnnouncementBtn=document.getElementById("clearAnnouncementBtn");
+    const settingsError=document.getElementById("settingsError");
+    const settingsSuccess=document.getElementById("settingsSuccess");
+    const requestsTbody=document.getElementById("requestsTbody");
+    const usersTbody=document.getElementById("usersTbody");
 
-    const requestsTbody = document.getElementById("requestsTbody");
-    const usersTbody = document.getElementById("usersTbody");
+    const adminLoginOverlay=document.getElementById("adminLoginOverlay");
+    const adminPassInput=document.getElementById("adminPassInput");
+    const adminLoginBtn=document.getElementById("adminLoginBtn");
+    const adminLoginError=document.getElementById("adminLoginError");
+    const ADMIN_PASSWORD="nrusplus";
 
-    function formatTwo(n) {
-      return n < 10 ? "0" + n : n;
-    }
+    function two(n){return n<10?"0"+n:n;}
 
-    function statusBadgeClass(status) {
-      switch (status) {
-        case "hazirlaniyor": return "hazirlaniyor";
-        case "gonderiliyor":
-        case "isleniyor": return "gonderiliyor";
-        case "kontrolde": return "kontrolde";
-        case "tamamlandi": return "tamamlandi";
-        default: return "";
+    // Admin login (her seferinde)
+    adminLoginBtn.addEventListener("click",()=>{
+      adminLoginError.style.display="none";
+      const val=adminPassInput.value.trim();
+      if(!val){
+        adminLoginError.textContent="Lütfen şifre gir.";
+        adminLoginError.style.display="block";
+        return;
       }
-    }
-
-    function statusText(status) {
-      switch (status) {
-        case "hazirlaniyor": return "Hazırlanıyor";
-        case "gonderiliyor":
-        case "isleniyor": return "Gönderiliyor / İşleniyor";
-        case "kontrolde": return "Yönetici kontrolünde";
-        case "tamamlandi": return "Tamamlandı";
-        default: return "Bilinmiyor";
+      if(val===ADMIN_PASSWORD){
+        adminLoginOverlay.style.display="none";
+      }else{
+        adminLoginError.textContent="Şifre hatalı.";
+        adminLoginError.style.display="block";
       }
-    }
+    });
+    adminPassInput.addEventListener("keyup",e=>{if(e.key==="Enter")adminLoginBtn.click();});
 
-    function updateServerPreview() {
-      const val = serverStatusSelect.value;
-      serverStatusPreview.classList.remove("online", "offline", "maintenance");
-      let text = "";
-      if (val === "online") {
-        serverStatusPreview.classList.add("online");
-        text = "Online";
-      } else if (val === "offline") {
-        serverStatusPreview.classList.add("offline");
-        text = "Offline";
-      } else {
-        serverStatusPreview.classList.add("maintenance");
-        text = "Bakım modunda";
-      }
-      serverStatusPreview.querySelector("span:last-child").textContent = text;
+    // Sunucu önizleme
+    function updateServerPreview(){
+      const v=serverStatusSelect.value;
+      serverStatusPreview.classList.remove("online","offline","maintenance");
+      let t="";
+      if(v==="online"){serverStatusPreview.classList.add("online");t="Online";}
+      else if(v==="offline"){serverStatusPreview.classList.add("offline");t="Offline";}
+      else{serverStatusPreview.classList.add("maintenance");t="Bakım modunda";}
+      serverStatusPreview.querySelector("span:last-child").textContent=t;
     }
-
-    serverStatusSelect.addEventListener("change", updateServerPreview);
+    serverStatusSelect.addEventListener("change",updateServerPreview);
     updateServerPreview();
 
     // Ayarları yükle
-    async function loadSettings() {
-      try {
-        const snap = await getDoc(settingsDocRef);
-        if (!snap.exists()) {
-          return;
+    async function loadSettings(){
+      try{
+        const snap=await getDoc(settingsDocRef);
+        if(!snap.exists())return;
+        const data=snap.data();
+        if(data.serverStatus){serverStatusSelect.value=data.serverStatus;updateServerPreview();}
+        if(data.serverStatusMessage){serverStatusMessage.value=data.serverStatusMessage;}
+        if(data.announcementTitle){announcementTitleInput.value=data.announcementTitle;}
+        if(data.announcementText){announcementTextInput.value=data.announcementText;}
+        if(data.updatedAt?.toDate){
+          const dt=data.updatedAt.toDate();
+          serverLastUpdated.textContent=`Son güncelleme: ${two(dt.getDate())}.${two(dt.getMonth()+1)} • ${two(dt.getHours())}:${two(dt.getMinutes())}`;
         }
-        const data = snap.data();
+      }catch(err){console.error("Ayarlar yüklenemedi",err);}
+    }
+    loadSettings();
 
-        if (data.serverStatus) {
-          serverStatusSelect.value = data.serverStatus;
-          updateServerPreview();
-        }
-        if (data.serverStatusMessage) {
-          serverStatusMessage.value = data.serverStatusMessage;
-        }
-        if (data.announcementTitle) {
-          announcementTitleInput.value = data.announcementTitle;
-        }
-        if (data.announcementText) {
-          announcementTextInput.value = data.announcementText;
-        }
-        if (data.updatedAt?.toDate) {
-          const dt = data.updatedAt.toDate();
-          const d = formatTwo(dt.getDate());
-          const m = formatTwo(dt.getMonth() + 1);
-          const h = formatTwo(dt.getHours());
-          const mm = formatTwo(dt.getMinutes());
-          serverLastUpdated.textContent = `Son güncelleme: ${d}.${m} • ${h}:${mm}`;
-        }
-      } catch (err) {
-        console.error("Ayarlar yüklenemedi", err);
+    // Ayar Kaydet
+    saveSettingsBtn.addEventListener("click",async()=>{
+      settingsError.style.display="none";settingsSuccess.style.display="none";
+      const serverStatus=serverStatusSelect.value;
+      const serverStatusMsg=serverStatusMessage.value.trim();
+      const aTitle=announcementTitleInput.value.trim();
+      const aText=announcementTextInput.value.trim();
+      saveSettingsBtn.disabled=true;saveSettingsBtn.textContent="Kaydediliyor...";
+      try{
+        await setDoc(settingsDocRef,{
+          serverStatus,
+          serverStatusMessage:serverStatusMsg,
+          announcementTitle:aTitle||null,
+          announcementText:aText||null,
+          updatedAt:serverTimestamp(),
+          announcementUpdatedAt:serverTimestamp()
+        },{merge:true});
+        settingsSuccess.textContent="Ayarlar kaydedildi.";settingsSuccess.style.display="block";
+        await loadSettings();
+      }catch(err){
+        console.error("Ayar kaydet hata:",err);
+        settingsError.textContent="Ayarlar kaydedilirken hata: "+(err.message||"");
+        settingsError.style.display="block";
+      }finally{
+        saveSettingsBtn.disabled=false;saveSettingsBtn.textContent="💾 Ayarları Kaydet";
+      }
+    });
+    clearAnnouncementBtn.addEventListener("click",()=>{announcementTitleInput.value="";announcementTextInput.value="";});
+
+    // Talepler dinle
+    function statusBadgeClass(s){
+      switch(s){
+        case "hazirlaniyor":return"hazirlaniyor";
+        case "gonderiliyor":
+        case "isleniyor":return"gonderiliyor";
+        case "kontrolde":return"kontrolde";
+        case "tamamlandi":return"tamamlandi";
+        default:return"";
+      }
+    }
+    function statusText(s){
+      switch(s){
+        case "hazirlaniyor":return"Hazırlanıyor";
+        case "gonderiliyor":
+        case "isleniyor":return"Gönderiliyor / İşleniyor";
+        case "kontrolde":return"Yönetici kontrolünde";
+        case "tamamlandi":return"Tamamlandı";
+        default:return"Bilinmiyor";
       }
     }
 
-    loadSettings();
-
-    // Ayarları kaydet
-    saveSettingsBtn.addEventListener("click", async () => {
-      settingsError.style.display = "none";
-      settingsSuccess.style.display = "none";
-
-      const serverStatus = serverStatusSelect.value;
-      const serverStatusMsg = serverStatusMessage.value.trim();
-      const announcementTitle = announcementTitleInput.value.trim();
-      const announcementText = announcementTextInput.value.trim();
-
-      saveSettingsBtn.disabled = true;
-      saveSettingsBtn.textContent = "Kaydediliyor...";
-
-      try {
-        await setDoc(settingsDocRef, {
-          serverStatus,
-          serverStatusMessage: serverStatusMsg,
-          announcementTitle: announcementTitle || null,
-          announcementText: announcementText || null,
-          updatedAt: serverTimestamp(),
-          announcementUpdatedAt: serverTimestamp()
-        }, { merge: true });
-
-        settingsSuccess.textContent = "Ayarlar başarıyla kaydedildi.";
-        settingsSuccess.style.display = "block";
-        await loadSettings();
-      } catch (err) {
-        console.error("Ayarlar kaydedilirken hata:", err);
-        settingsError.textContent = "Ayarlar kaydedilirken bir hata oluştu: " + (err.message || "");
-        settingsError.style.display = "block";
-      } finally {
-        saveSettingsBtn.disabled = false;
-        saveSettingsBtn.textContent = "💾 Ayarları Kaydet";
-      }
-    });
-
-    clearAnnouncementBtn.addEventListener("click", () => {
-      announcementTitleInput.value = "";
-      announcementTextInput.value = "";
-    });
-
-    // Talepleri canlı dinle
-    const qRequests = query(requestsCol, orderBy("createdAt", "desc"));
-
-    onSnapshot(qRequests, (snapshot) => {
-      if (snapshot.empty) {
-        requestsTbody.innerHTML = `
-          <tr><td colspan="4" style="padding:10px;">Henüz bir talep yok.</td></tr>
-        `;
+    const qRequests=query(requestsCol,orderBy("createdAt","desc"));
+    onSnapshot(qRequests,snapshot=>{
+      if(snapshot.empty){
+        requestsTbody.innerHTML='<tr><td colspan="4" style="padding:10px;">Henüz talep yok.</td></tr>';
         return;
       }
-
-      let html = "";
-      snapshot.forEach((docSnap) => {
-        const d = docSnap.data();
-        const id = docSnap.id;
-        const st = d.status || "hazirlaniyor";
-        const createdAt = d.createdAt?.toDate ? d.createdAt.toDate() : null;
-
-        let timeText = "";
-        if (createdAt) {
-          const day = formatTwo(createdAt.getDate());
-          const month = formatTwo(createdAt.getMonth() + 1);
-          const hour = formatTwo(createdAt.getHours());
-          const minute = formatTwo(createdAt.getMinutes());
-          timeText = `${day}.${month} • ${hour}:${minute}`;
+      let html="";
+      snapshot.forEach(docSnap=>{
+        const d=docSnap.data();
+        const id=docSnap.id;
+        const st=d.status||"hazirlaniyor";
+        const createdAt=d.createdAt?.toDate?d.createdAt.toDate():null;
+        let timeText="";
+        if(createdAt){
+          timeText=`${two(createdAt.getDate())}.${two(createdAt.getMonth()+1)} • ${two(createdAt.getHours())}:${two(createdAt.getMinutes())}`;
         }
+        const role=d.userRole||"user";
+        const roleLabel=role==="vip"
+          ? '<span class="badge-role-vip">VIP</span>'
+          : role==="banned"
+            ? '<span class="badge-role-banned">BANNED</span>'
+            : '<span class="badge-role-user">USER</span>';
 
-        const role = d.userRole || "user";
-        const roleLabel =
-          role === "vip"
-            ? `<span class="badge-role-vip">VIP</span>`
-            : role === "banned"
-              ? `<span class="badge-role-banned">Banned</span>`
-              : `<span class="badge-role-user">User</span>`;
-
-        html += `
+        html+=`
           <tr data-id="${id}">
             <td>
-              <strong>${d.userName || "Bilinmiyor"}</strong>
-              <div class="small">${timeText || "-"}</div>
+              <strong>${d.userName||"Bilinmiyor"}</strong>
+              <div class="small">${timeText||"-"}</div>
               <div class="small">Rol: ${roleLabel}</div>
             </td>
             <td>
               <div class="badge-platform">
-                <span>${d.platform || "-"}</span>
-                <span>•</span>
-                <span>${d.serviceType || "-"}</span>
+                <span>${d.platform||"-"}</span><span>•</span><span>${d.serviceType||"-"}</span>
               </div>
-              <div class="small">Adet: ${d.quantity || "-"}, Öncelik: ${d.priority || "Normal"}</div>
+              <div class="small">Adet: ${d.quantity||"-"}, Öncelik: ${d.priority||"Normal"}</div>
             </td>
             <td class="link-cell">
               <a href="${d.link}" target="_blank" rel="noopener noreferrer">${d.link}</a>
-              ${d.notes ? `<div class="small" style="margin-top:3px;">Not: ${d.notes}</div>` : ""}
+              ${d.notes?`<div class="small" style="margin-top:3px;">Not: ${d.notes}</div>`:""}
             </td>
             <td>
-              <div style="display:flex; flex-direction:column; gap:4px;">
-                <span class="status-badge ${statusBadgeClass(st)}">
-                  ${statusText(st)}
-                </span>
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <span class="status-badge ${statusBadgeClass(st)}">${statusText(st)}</span>
                 <select class="statusSelect">
-                  <option value="hazirlaniyor" ${st === "hazirlaniyor" ? "selected" : ""}>Hazırlanıyor</option>
-                  <option value="gonderiliyor" ${st === "gonderiliyor" || st === "isleniyor" ? "selected" : ""}>Gönderiliyor / İşleniyor</option>
-                  <option value="kontrolde" ${st === "kontrolde" ? "selected" : ""}>Yönetici kontrolünde</option>
-                  <option value="tamamlandi" ${st === "tamamlandi" ? "selected" : ""}>Tamamlandı</option>
+                  <option value="hazirlaniyor" ${st==="hazirlaniyor"?"selected":""}>Hazırlanıyor</option>
+                  <option value="gonderiliyor" ${st==="gonderiliyor"||st==="isleniyor"?"selected":""}>Gönderiliyor / İşleniyor</option>
+                  <option value="kontrolde" ${st==="kontrolde"?"selected":""}>Yönetici kontrolünde</option>
+                  <option value="tamamlandi" ${st==="tamamlandi"?"selected":""}>Tamamlandı</option>
                 </select>
-                <button class="btn btn-ghost btnUpdateStatus">
-                  Güncelle
-                </button>
+                <button class="btn btn-ghost btnUpdateStatus">Güncelle</button>
               </div>
             </td>
           </tr>
         `;
       });
-
-      requestsTbody.innerHTML = html;
+      requestsTbody.innerHTML=html;
       attachStatusEvents();
     });
 
-    function attachStatusEvents() {
-      document.querySelectorAll(".btnUpdateStatus").forEach((btn) => {
-        btn.onclick = async (e) => {
-          const tr = e.target.closest("tr");
-          const id = tr.dataset.id;
-          const select = tr.querySelector(".statusSelect");
-          const newStatus = select.value;
-
-          btn.disabled = true;
-          btn.textContent = "Kaydediliyor...";
-
-          try {
-            await updateDoc(doc(db, "requests", id), {
-              status: newStatus
-            });
-          } catch (err) {
-            console.error("Durum güncellenirken hata:", err);
+    function attachStatusEvents(){
+      document.querySelectorAll(".btnUpdateStatus").forEach(btn=>{
+        btn.onclick=async e=>{
+          const tr=e.target.closest("tr");
+          const id=tr.dataset.id;
+          const select=tr.querySelector(".statusSelect");
+          const newStatus=select.value;
+          btn.disabled=true;btn.textContent="Kaydediliyor...";
+          try{
+            await updateDoc(doc(db,"requests",id),{status:newStatus});
+          }catch(err){
+            console.error("Durum güncelleme hata:",err);
             alert("Durum güncellenirken hata oluştu.");
-          } finally {
-            btn.disabled = false;
-            btn.textContent = "Güncelle";
+          }finally{
+            btn.disabled=false;btn.textContent="Güncelle";
           }
         };
       });
     }
 
-    // Kullanıcılar canlı dinle
-    const qUsers = query(usersCol, orderBy("createdAt", "desc"));
-
-    onSnapshot(qUsers, (snapshot) => {
-      if (snapshot.empty) {
-        usersTbody.innerHTML = `
-          <tr><td colspan="4" style="padding:10px;">Henüz kullanıcı yok.</td></tr>
-        `;
+    // Kullanıcılar dinle
+    const qUsers=query(usersCol,orderBy("createdAt","desc"));
+    onSnapshot(qUsers,snapshot=>{
+      if(snapshot.empty){
+        usersTbody.innerHTML='<tr><td colspan="4" style="padding:10px;">Henüz kullanıcı yok.</td></tr>';
         return;
       }
-
-      let html = "";
-      snapshot.forEach((docSnap) => {
-        const d = docSnap.data();
-        const id = docSnap.id;
-        const createdAt = d.createdAt?.toDate ? d.createdAt.toDate() : null;
-
-        let timeText = "";
-        if (createdAt) {
-          const day = formatTwo(createdAt.getDate());
-          const month = formatTwo(createdAt.getMonth() + 1);
-          const hour = formatTwo(createdAt.getHours());
-          const minute = formatTwo(createdAt.getMinutes());
-          timeText = `${day}.${month} • ${hour}:${minute}`;
+      let html="";
+      snapshot.forEach(docSnap=>{
+        const d=docSnap.data();
+        const id=docSnap.id;
+        const createdAt=d.createdAt?.toDate?d.createdAt.toDate():null;
+        let timeText="";
+        if(createdAt){
+          timeText=`${two(createdAt.getDate())}.${two(createdAt.getMonth()+1)} • ${two(createdAt.getHours())}:${two(createdAt.getMinutes())}`;
         }
+        const role=d.role||"user";
+        let badgeClass="badge-role-user";
+        if(role==="vip")badgeClass="badge-role-vip";
+        if(role==="banned")badgeClass="badge-role-banned";
 
-        const role = d.role || "user";
-        let roleBadgeClass = "badge-role-user";
-        if (role === "vip") roleBadgeClass = "badge-role-vip";
-        if (role === "banned") roleBadgeClass = "badge-role-banned";
-
-        html += `
+        html+=`
           <tr data-id="${id}">
             <td>
-              <strong>${d.name || "İsimsiz"}</strong>
+              <strong>${d.name||"İsimsiz"}</strong>
               <div class="small">${id}</div>
             </td>
+            <td><span class="${badgeClass}">${role.toUpperCase()}</span></td>
+            <td><div class="small">${timeText||"-"}</div></td>
             <td>
-              <span class="${roleBadgeClass}">${role.toUpperCase()}</span>
-            </td>
-            <td>
-              <div class="small">${timeText || "-"}</div>
-            </td>
-            <td>
-              <div style="display:flex; flex-direction:column; gap:4px;">
+              <div style="display:flex;flex-direction:column;gap:4px;">
                 <select class="roleSelect">
-                  <option value="user" ${role === "user" ? "selected" : ""}>User</option>
-                  <option value="vip" ${role === "vip" ? "selected" : ""}>VIP</option>
-                  <option value="banned" ${role === "banned" ? "selected" : ""}>Banned</option>
+                  <option value="user" ${role==="user"?"selected":""}>User</option>
+                  <option value="vip" ${role==="vip"?"selected":""}>VIP</option>
+                  <option value="banned" ${role==="banned"?"selected":""}>Banned</option>
                 </select>
                 <button class="btn btn-ghost btnUpdateRole">Rolü Kaydet</button>
               </div>
@@ -992,32 +583,25 @@
           </tr>
         `;
       });
-
-      usersTbody.innerHTML = html;
+      usersTbody.innerHTML=html;
       attachRoleEvents();
     });
 
-    function attachRoleEvents() {
-      document.querySelectorAll(".btnUpdateRole").forEach((btn) => {
-        btn.onclick = async (e) => {
-          const tr = e.target.closest("tr");
-          const id = tr.dataset.id;
-          const select = tr.querySelector(".roleSelect");
-          const newRole = select.value;
-
-          btn.disabled = true;
-          btn.textContent = "Kaydediliyor...";
-
-          try {
-            await updateDoc(doc(db, "users", id), {
-              role: newRole
-            });
-          } catch (err) {
-            console.error("Rol güncellenirken hata:", err);
+    function attachRoleEvents(){
+      document.querySelectorAll(".btnUpdateRole").forEach(btn=>{
+        btn.onclick=async e=>{
+          const tr=e.target.closest("tr");
+          const id=tr.dataset.id;
+          const select=tr.querySelector(".roleSelect");
+          const newRole=select.value;
+          btn.disabled=true;btn.textContent="Kaydediliyor...";
+          try{
+            await updateDoc(doc(db,"users",id),{role:newRole});
+          }catch(err){
+            console.error("Rol güncelleme hata:",err);
             alert("Rol güncellenirken hata oluştu.");
-          } finally {
-            btn.disabled = false;
-            btn.textContent = "Rolü Kaydet";
+          }finally{
+            btn.disabled=false;btn.textContent="Rolü Kaydet";
           }
         };
       });
