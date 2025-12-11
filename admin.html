@@ -436,6 +436,65 @@
       color: #bbf7d0;
       margin-top: 6px;
     }
+
+    /* USERS CARD */
+    .users-wrapper {
+      max-height: 280px;
+      overflow: auto;
+      border-radius: 14px;
+      border: 1px solid rgba(31, 41, 55, 0.95);
+      margin-top: 4px;
+    }
+
+    .users-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    .users-table th,
+    .users-table td {
+      padding: 6px 6px;
+      border-bottom: 1px solid rgba(31, 41, 55, 0.95);
+      vertical-align: top;
+    }
+
+    .users-table th {
+      text-align: left;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      position: sticky;
+      top: 0;
+      background: #020617;
+    }
+
+    .badge-role-user {
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.9);
+      font-size: 11px;
+      color: #e5e7eb;
+    }
+
+    .badge-role-vip {
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(250, 204, 21, 0.9);
+      font-size: 11px;
+      color: #facc15;
+      background: rgba(250, 204, 21, 0.12);
+    }
+
+    .badge-role-banned {
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(239, 68, 68, 0.9);
+      font-size: 11px;
+      color: #fecaca;
+      background: rgba(239, 68, 68, 0.12);
+    }
   </style>
 </head>
 <body>
@@ -451,7 +510,7 @@
             <span class="brand-pill">Admin</span>
           </div>
           <div class="brand-subtitle">
-            Talepleri yönet, duyuru & sunucu durumunu kontrol et.
+            Talepleri ve kullanıcı rolleri yönet.
           </div>
         </div>
       </div>
@@ -566,6 +625,38 @@
         </div>
       </section>
     </div>
+
+    <!-- Kullanıcı Yönetimi -->
+    <section class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">
+            <span class="icon">👤</span> Kullanıcı Yönetimi
+          </div>
+          <p class="card-subtitle">
+            İsimle giriş yapan kullanıcılar burada listelenir. Rol ataması yaparak VIP veya yasaklı durumunu ayarlayabilirsin.
+          </p>
+        </div>
+      </div>
+
+      <div class="users-wrapper">
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th>Kullanıcı</th>
+              <th>Rol</th>
+              <th>Oluşturma</th>
+              <th>İşlem</th>
+            </tr>
+          </thead>
+          <tbody id="usersTbody">
+            <tr>
+              <td colspan="4" style="padding:10px;">Kullanıcılar yükleniyor...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
   </div>
 
   <!-- Firebase & JS -->
@@ -586,7 +677,6 @@
       serverTimestamp
     } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
 
-    // 🔥 Aynı Firebase Config
     const firebaseConfig = {
       apiKey: "AIzaSyDWfmgssPwMkXRilR4qc4V8gJs2efzumuY",
       authDomain: "quality-3362.firebaseapp.com",
@@ -602,6 +692,7 @@
 
     const requestsCol = collection(db, "requests");
     const settingsDocRef = doc(db, "config", "settings");
+    const usersCol = collection(db, "users");
 
     const serverStatusSelect = document.getElementById("serverStatusSelect");
     const serverStatusMessage = document.getElementById("serverStatusMessage");
@@ -615,6 +706,7 @@
     const settingsSuccess = document.getElementById("settingsSuccess");
 
     const requestsTbody = document.getElementById("requestsTbody");
+    const usersTbody = document.getElementById("usersTbody");
 
     function formatTwo(n) {
       return n < 10 ? "0" + n : n;
@@ -670,6 +762,7 @@
           return;
         }
         const data = snap.data();
+
         if (data.serverStatus) {
           serverStatusSelect.value = data.serverStatus;
           updateServerPreview();
@@ -725,8 +818,8 @@
         settingsSuccess.style.display = "block";
         await loadSettings();
       } catch (err) {
-        console.error(err);
-        settingsError.textContent = "Ayarlar kaydedilirken bir hata oluştu.";
+        console.error("Ayarlar kaydedilirken hata:", err);
+        settingsError.textContent = "Ayarlar kaydedilirken bir hata oluştu: " + (err.message || "");
         settingsError.style.display = "block";
       } finally {
         saveSettingsBtn.disabled = false;
@@ -766,11 +859,20 @@
           timeText = `${day}.${month} • ${hour}:${minute}`;
         }
 
+        const role = d.userRole || "user";
+        const roleLabel =
+          role === "vip"
+            ? `<span class="badge-role-vip">VIP</span>`
+            : role === "banned"
+              ? `<span class="badge-role-banned">Banned</span>`
+              : `<span class="badge-role-user">User</span>`;
+
         html += `
           <tr data-id="${id}">
             <td>
               <strong>${d.userName || "Bilinmiyor"}</strong>
               <div class="small">${timeText || "-"}</div>
+              <div class="small">Rol: ${roleLabel}</div>
             </td>
             <td>
               <div class="badge-platform">
@@ -824,11 +926,98 @@
               status: newStatus
             });
           } catch (err) {
-            console.error(err);
+            console.error("Durum güncellenirken hata:", err);
             alert("Durum güncellenirken hata oluştu.");
           } finally {
             btn.disabled = false;
             btn.textContent = "Güncelle";
+          }
+        };
+      });
+    }
+
+    // Kullanıcılar canlı dinle
+    const qUsers = query(usersCol, orderBy("createdAt", "desc"));
+
+    onSnapshot(qUsers, (snapshot) => {
+      if (snapshot.empty) {
+        usersTbody.innerHTML = `
+          <tr><td colspan="4" style="padding:10px;">Henüz kullanıcı yok.</td></tr>
+        `;
+        return;
+      }
+
+      let html = "";
+      snapshot.forEach((docSnap) => {
+        const d = docSnap.data();
+        const id = docSnap.id;
+        const createdAt = d.createdAt?.toDate ? d.createdAt.toDate() : null;
+
+        let timeText = "";
+        if (createdAt) {
+          const day = formatTwo(createdAt.getDate());
+          const month = formatTwo(createdAt.getMonth() + 1);
+          const hour = formatTwo(createdAt.getHours());
+          const minute = formatTwo(createdAt.getMinutes());
+          timeText = `${day}.${month} • ${hour}:${minute}`;
+        }
+
+        const role = d.role || "user";
+        let roleBadgeClass = "badge-role-user";
+        if (role === "vip") roleBadgeClass = "badge-role-vip";
+        if (role === "banned") roleBadgeClass = "badge-role-banned";
+
+        html += `
+          <tr data-id="${id}">
+            <td>
+              <strong>${d.name || "İsimsiz"}</strong>
+              <div class="small">${id}</div>
+            </td>
+            <td>
+              <span class="${roleBadgeClass}">${role.toUpperCase()}</span>
+            </td>
+            <td>
+              <div class="small">${timeText || "-"}</div>
+            </td>
+            <td>
+              <div style="display:flex; flex-direction:column; gap:4px;">
+                <select class="roleSelect">
+                  <option value="user" ${role === "user" ? "selected" : ""}>User</option>
+                  <option value="vip" ${role === "vip" ? "selected" : ""}>VIP</option>
+                  <option value="banned" ${role === "banned" ? "selected" : ""}>Banned</option>
+                </select>
+                <button class="btn btn-ghost btnUpdateRole">Rolü Kaydet</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+
+      usersTbody.innerHTML = html;
+      attachRoleEvents();
+    });
+
+    function attachRoleEvents() {
+      document.querySelectorAll(".btnUpdateRole").forEach((btn) => {
+        btn.onclick = async (e) => {
+          const tr = e.target.closest("tr");
+          const id = tr.dataset.id;
+          const select = tr.querySelector(".roleSelect");
+          const newRole = select.value;
+
+          btn.disabled = true;
+          btn.textContent = "Kaydediliyor...";
+
+          try {
+            await updateDoc(doc(db, "users", id), {
+              role: newRole
+            });
+          } catch (err) {
+            console.error("Rol güncellenirken hata:", err);
+            alert("Rol güncellenirken hata oluştu.");
+          } finally {
+            btn.disabled = false;
+            btn.textContent = "Rolü Kaydet";
           }
         };
       });
