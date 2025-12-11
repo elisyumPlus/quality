@@ -22,11 +22,7 @@
       --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.65);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -89,124 +85,51 @@
       pointer-events: none;
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      position: relative;
-      z-index: 1;
-    }
-
+    .brand { display: flex; align-items: center; gap: 12px; position: relative; z-index: 1; }
     .brand-logo {
-      width: 38px;
-      height: 38px;
-      border-radius: 14px;
+      width: 38px; height: 38px; border-radius: 14px;
       background: conic-gradient(from 200deg, #4f46e5, #22c55e, #ec4899, #4f46e5);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+      display: inline-flex; align-items: center; justify-content: center;
       box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.4), 0 10px 25px rgba(15, 23, 42, 0.9);
       position: relative;
     }
-
-    .brand-logo span {
-      font-weight: 700;
-      font-size: 17px;
-      color: #f9fafb;
-      text-shadow: 0 0 12px rgba(15, 23, 42, 0.9);
-    }
-
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .brand-title {
-      font-size: 18px;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
+    .brand-logo span { font-weight: 700; font-size: 17px; color: #f9fafb; }
+    .brand-text { display: flex; flex-direction: column; gap: 2px; }
+    .brand-title { font-size: 18px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
     .brand-pill {
-      font-size: 11px;
-      padding: 2px 7px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      color: #e5e7eb;
-      text-transform: uppercase;
+      font-size: 11px; padding: 2px 7px; border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6); text-transform: uppercase;
     }
+    .brand-subtitle { font-size: 12px; color: var(--muted); }
 
-    .brand-subtitle {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      position: relative;
-      z-index: 1;
-    }
+    .header-right { display: flex; align-items: center; gap: 12px; position: relative; z-index: 1; }
 
     .time-box {
-      padding: 6px 10px;
-      border-radius: 999px;
+      padding: 6px 10px; border-radius: 999px;
       background: rgba(15, 23, 42, 0.88);
       border: 1px solid rgba(148, 163, 184, 0.55);
       font-size: 11px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: #e5e7eb;
+      display: flex; align-items: center; gap: 8px;
     }
-
-    .time-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 10px rgba(34, 197, 94, 0.9);
-    }
+    .time-dot { width: 8px; height: 8px; border-radius: 999px; background: #22c55e; }
 
     .user-pill {
-      font-size: 12px;
-      padding: 7px 12px;
-      border-radius: 999px;
+      font-size: 12px; padding: 7px 12px; border-radius: 999px;
       background: rgba(15, 23, 42, 0.9);
       border: 1px solid rgba(148, 163, 184, 0.7);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: #e5e7eb;
+      display: flex; align-items: center; gap: 6px;
     }
-
     .user-avatar {
-      width: 22px;
-      height: 22px;
-      border-radius: 999px;
+      width: 22px; height: 22px; border-radius: 999px;
       background: radial-gradient(circle at 30% 0%, #f97316, #4f46e5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      font-weight: 600;
-      color: #f9fafb;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 600;
     }
-
     .vip-pill {
-      font-size: 10px;
-      padding: 2px 6px;
-      border-radius: 999px;
+      font-size: 10px; padding: 2px 6px; border-radius: 999px;
       border: 1px solid rgba(251, 191, 36, 0.8);
       background: rgba(250, 204, 21, 0.15);
-      color: #facc15;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
+      color: #facc15; text-transform: uppercase; letter-spacing: 0.06em;
     }
 
     .announcement {
@@ -214,246 +137,109 @@
       padding: 10px 12px;
       background: linear-gradient(90deg, rgba(56, 189, 248, 0.18), rgba(129, 140, 248, 0.2));
       border: 1px solid rgba(56, 189, 248, 0.6);
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
+      display: flex; align-items: flex-start; gap: 10px;
       font-size: 13px;
-      color: #e5f5ff;
     }
 
-    .announcement-icon {
-      margin-top: 2px;
-      font-size: 16px;
-    }
-
-    .announcement small {
-      display: block;
-      color: rgba(226, 232, 240, 0.8);
-      margin-top: 2px;
-    }
+    .announcement-icon { margin-top: 2px; font-size: 16px; }
+    .announcement small { display: block; color: rgba(226, 232, 240, 0.8); margin-top: 2px; }
 
     .grid {
       display: grid;
       grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.1fr);
-      gap: 18px;
-      margin-top: 4px;
+      gap: 18px; margin-top: 4px;
     }
-
-    @media (max-width: 900px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-    }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
 
     .card {
       border-radius: var(--rounded-xl);
       background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), #020617);
       border: 1px solid rgba(31, 41, 55, 0.8);
       padding: 14px 14px 16px;
-      position: relative;
-      overflow: hidden;
     }
 
     .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      display: flex; justify-content: space-between; align-items: center;
       margin-bottom: 8px;
     }
 
     .card-title {
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-      color: #e5e7eb;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      font-size: 14px; font-weight: 600;
+      letter-spacing: 0.03em; text-transform: uppercase;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .card-title span.icon { font-size: 16px; }
+    .card-subtitle { font-size: 12px; color: var(--muted); }
+
+    .greeting { margin-top: 6px; font-size: 20px; font-weight: 600; }
+    .greeting-sub { margin-top: 4px; font-size: 13px; color: var(--muted); }
+
+    .small-label {
+      font-size: 10px; text-transform: uppercase;
+      letter-spacing: 0.08em; color: rgba(148, 163, 184, 0.9);
+      margin-bottom: 3px;
+    }
+    .badge-role-info { font-size: 11px; color: var(--muted); }
+
+    form { margin-top: 8px; display: flex; flex-direction: column; gap: 10px; font-size: 13px; }
+
+    label { font-size: 12px; color: #cbd5f5; margin-bottom: 2px; display: block; }
+
+    .field-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .field { flex: 1 1 140px; }
+
+    select, input, textarea {
+      width: 100%; padding: 8px 9px; border-radius: 12px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.95);
+      color: var(--text); font-size: 13px; outline: none;
+    }
+    select:focus, input:focus, textarea:focus {
+      border-color: rgba(129, 140, 248, 0.9);
+      box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.6);
     }
 
-    .card-title span.icon {
-      font-size: 16px;
-    }
+    textarea { resize: vertical; min-height: 70px; max-height: 130px; }
 
-    .card-subtitle {
-      font-size: 12px;
-      color: var(--muted);
+    .hint { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    .btn-primary {
+      margin-top: 3px; border: none; border-radius: 999px;
+      padding: 9px 14px; font-size: 13px; font-weight: 600;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      background: radial-gradient(circle at 0 0, rgba(250, 250, 250, 0.15), transparent 58%),
+                  linear-gradient(120deg, #4f46e5, #6366f1, #22c55e);
+      color: white; cursor: pointer;
+      box-shadow: 0 14px 30px rgba(79, 70, 229, 0.5);
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-primary[disabled] { opacity: 0.65; cursor: wait; box-shadow: none; }
+
+    .error-text { font-size: 12px; color: #fecaca; margin-top: 4px; }
+
+    .server-metrics {
+      margin-top: 8px; display: flex; gap: 10px; flex-wrap: wrap; font-size: 11px;
+    }
+    .metric {
+      padding: 6px 9px; border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(75, 85, 99, 0.9);
     }
 
     .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      padding: 5px 9px;
-      border-radius: 999px;
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; padding: 5px 9px; border-radius: 999px;
       background: rgba(15, 23, 42, 0.9);
       border: 1px solid rgba(34, 197, 94, 0.6);
-      color: #bbf7d0;
     }
-
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 10px rgba(34, 197, 94, 0.9);
-    }
-
     .status-pill.offline {
       border-color: rgba(239, 68, 68, 0.65);
       color: #fecaca;
     }
-    .status-pill.offline .status-dot {
-      background: #ef4444;
-      box-shadow: 0 0 10px rgba(239, 68, 68, 0.9);
-    }
+    .status-dot { width: 8px; height: 8px; border-radius: 999px; background: #22c55e; }
 
-    .server-metrics {
-      margin-top: 8px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      font-size: 11px;
-    }
-
-    .metric {
-      padding: 6px 9px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(75, 85, 99, 0.9);
-      color: #e5e7eb;
-    }
-
-    .greeting {
-      margin-top: 6px;
-      font-size: 20px;
-      font-weight: 600;
-    }
-
-    .greeting span {
-      color: #a5b4fc;
-    }
-
-    .greeting-sub {
-      margin-top: 4px;
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    form {
-      margin-top: 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      font-size: 13px;
-    }
-
-    label {
-      font-size: 12px;
-      color: #cbd5f5;
-      margin-bottom: 2px;
-      display: block;
-    }
-
-    .field-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .field {
-      flex: 1 1 140px;
-    }
-
-    select,
-    input,
-    textarea {
-      width: 100%;
-      padding: 8px 9px;
-      border-radius: 12px;
-      border: 1px solid rgba(55, 65, 81, 0.9);
-      background: rgba(15, 23, 42, 0.95);
-      color: var(--text);
-      font-size: 13px;
-      outline: none;
-      transition: border-color 0.16s ease, box-shadow 0.18s ease, background 0.18s ease;
-    }
-
-    select:focus,
-    input:focus,
-    textarea:focus {
-      border-color: rgba(129, 140, 248, 0.9);
-      box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.6);
-      background: rgba(15, 23, 42, 0.97);
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 70px;
-      max-height: 130px;
-    }
-
-    .hint {
-      font-size: 11px;
-      color: var(--muted);
-      margin-top: 2px;
-    }
-
-    .btn-primary {
-      margin-top: 3px;
-      border: none;
-      border-radius: 999px;
-      padding: 9px 14px;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      background: radial-gradient(circle at 0 0, rgba(250, 250, 250, 0.15), transparent 58%),
-                  linear-gradient(120deg, #4f46e5, #6366f1, #22c55e);
-      color: white;
-      cursor: pointer;
-      box-shadow: 0 14px 30px rgba(79, 70, 229, 0.5);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      align-self: flex-start;
-    }
-
-    .btn-primary span.icon {
-      font-size: 16px;
-    }
-
-    .btn-primary:active {
-      transform: translateY(1px);
-      box-shadow: 0 8px 18px rgba(79, 70, 229, 0.55);
-    }
-
-    .btn-primary[disabled] {
-      opacity: 0.65;
-      cursor: wait;
-      box-shadow: none;
-    }
-
-    .error-text {
-      font-size: 12px;
-      color: #fecaca;
-      margin-top: 4px;
-    }
-
-    .requests {
-      margin-top: 4px;
-      max-height: 330px;
-      overflow: auto;
-      padding-right: 4px;
-    }
-
-    .request-empty {
-      font-size: 12px;
-      color: var(--muted);
-      padding: 12px 0 4px;
-    }
+    .requests { margin-top: 4px; max-height: 330px; overflow: auto; padding-right: 4px; }
+    .request-empty { font-size: 12px; color: var(--muted); padding: 12px 0 4px; }
 
     .request-item {
       border-radius: 18px;
@@ -466,203 +252,96 @@
       column-gap: 10px;
       row-gap: 4px;
       font-size: 12px;
-      align-items: flex-start;
     }
-
-    @media (max-width: 780px) {
-      .request-item {
-        grid-template-columns: 1fr;
-      }
-    }
+    @media (max-width: 780px) { .request-item { grid-template-columns: 1fr; } }
 
     .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 3px 8px;
-      border-radius: 999px;
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 3px 8px; border-radius: 999px;
       font-size: 11px;
       background: rgba(15, 23, 42, 0.9);
       border: 1px solid rgba(55, 65, 81, 0.9);
-      color: #e5e7eb;
     }
-
     .badge-status-hazirlaniyor {
       border-color: rgba(59, 130, 246, 0.9);
       background: rgba(37, 99, 235, 0.18);
       color: #dbeafe;
     }
-
     .badge-status-gonderiliyor {
       border-color: rgba(129, 140, 248, 0.9);
       background: rgba(129, 140, 248, 0.17);
       color: #e0e7ff;
     }
-
     .badge-status-kontrol {
       border-color: rgba(249, 115, 22, 0.9);
       background: rgba(251, 146, 60, 0.18);
       color: #ffedd5;
     }
-
     .badge-status-tamamlandi {
       border-color: rgba(34, 197, 94, 0.9);
       background: rgba(34, 197, 94, 0.16);
       color: #bbf7d0;
     }
+    .badge-platform { border-color: rgba(148, 163, 184, 0.9); }
 
-    .badge-platform {
-      border-color: rgba(148, 163, 184, 0.9);
-    }
-
-    .request-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-    }
-
-    .request-notes {
-      margin-top: 4px;
-      font-size: 12px;
-      color: #e5e7eb;
-    }
-
-    .request-link a {
-      color: #38bdf8;
-      text-decoration: none;
-      word-break: break-all;
-      font-size: 11px;
-    }
-
-    .request-link a:hover {
-      text-decoration: underline;
-    }
-
-    .request-time {
-      font-size: 11px;
-      color: var(--muted);
-      text-align: right;
-      white-space: nowrap;
-    }
-
-    .small-label {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: rgba(148, 163, 184, 0.9);
-      margin-bottom: 3px;
-    }
+    .request-meta { display: flex; flex-wrap: wrap; gap: 4px; }
+    .request-notes { margin-top: 4px; font-size: 12px; }
+    .request-link a { color: #38bdf8; text-decoration: none; word-break: break-all; font-size: 11px; }
+    .request-time { font-size: 11px; color: var(--muted); text-align: right; }
 
     /* LOGIN OVERLAY */
     .login-overlay {
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.98));
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.99));
       backdrop-filter: blur(10px);
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 50;
     }
-
     .login-card {
-      width: 100%;
-      max-width: 420px;
+      width: 100%; max-width: 420px;
       background: rgba(15, 23, 42, 0.98);
       border-radius: 24px;
       border: 1px solid rgba(148, 163, 184, 0.4);
       padding: 18px 18px 16px;
       box-shadow: 0 20px 45px rgba(15, 23, 42, 0.85);
     }
-
-    .login-title {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 4px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .login-sub {
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .login-row {
-      margin-top: 12px;
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .login-row input {
-      flex: 1 1 160px;
-    }
-
+    .login-title { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+    .login-sub { font-size: 13px; color: var(--muted); }
+    .login-row { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .login-row input { flex: 1 1 160px; }
     .btn-login {
-      border-radius: 999px;
-      border: none;
-      padding: 8px 14px;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      cursor: pointer;
+      border-radius: 999px; border: none; padding: 8px 14px;
+      font-size: 13px; font-weight: 600; letter-spacing: 0.04em;
+      text-transform: uppercase; cursor: pointer;
       background: linear-gradient(120deg, #4f46e5, #6366f1);
       color: white;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      white-space: nowrap;
     }
-
-    .btn-login[disabled] {
-      opacity: 0.65;
-      cursor: wait;
-    }
-
-    .login-error {
-      margin-top: 6px;
-      font-size: 12px;
-      color: #fecaca;
-    }
-
-    .login-hint {
-      margin-top: 6px;
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .badge-role {
-      font-size: 11px;
-      margin-left: 4px;
-      color: var(--muted);
-    }
+    .btn-login[disabled] { opacity: 0.65; cursor: wait; }
+    .login-error { margin-top: 6px; font-size: 12px; color: #fecaca; }
+    .login-hint { margin-top: 6px; font-size: 11px; color: var(--muted); }
   </style>
 </head>
 <body>
   <div class="app">
-    <!-- LOGIN OVERLAY -->
+    <!-- GİRİŞ OVERLAY -->
     <div class="login-overlay" id="loginOverlay">
       <div class="login-card">
-        <div class="login-title">
-          <span>🔐 Kullanıcı girişi</span>
-        </div>
+        <div class="login-title">🔐 Kullanıcı girişi</div>
         <div class="login-sub">
-          Sisteme kayıt olmak için sadece ismini yazman yeterli. Aynı isimle tekrar girersen hesabın geri yüklenir.
+          Sisteme giriş için sadece ismini yazman yeterli. Aynı isimle tekrar girersen, Firestore’daki hesabın kullanılır.
         </div>
 
         <div class="login-row">
           <input id="loginNameInput" placeholder="Örn: Ahmet" />
-          <button id="loginBtn" class="btn-login">
-            Giriş yap
-          </button>
+          <button id="loginBtn" class="btn-login">Giriş yap</button>
         </div>
 
         <div id="loginError" class="login-error" style="display:none;"></div>
         <div class="login-hint">
-          VIP rolü, admin tarafından atanır. Banned olan kullanıcılar işlem yapamaz.
+          VIP veya yasaklı durumu admin tarafından belirlenir.
         </div>
       </div>
     </div>
@@ -670,17 +349,12 @@
     <!-- HEADER -->
     <header class="app-header">
       <div class="brand">
-        <div class="brand-logo">
-          <span>SP</span>
-        </div>
+        <div class="brand-logo"><span>SP</span></div>
         <div class="brand-text">
           <div class="brand-title">
-            Servis Paneli
-            <span class="brand-pill">User</span>
+            Servis Paneli <span class="brand-pill">User</span>
           </div>
-          <div class="brand-subtitle">
-            Sosyal medya servis talebi, anlık durum takibi.
-          </div>
+          <div class="brand-subtitle">Sosyal medya servis talebi, anlık durum takibi.</div>
         </div>
       </div>
 
@@ -690,7 +364,7 @@
           <span id="clockText">--:--</span>
         </div>
         <div class="user-pill">
-          <div class="user-avatar" id="userAvatar">U</div>
+          <div class="user-avatar" id="userAvatar">M</div>
           <span id="userNameLabel">Misafir</span>
           <span id="vipBadge" class="vip-pill" style="display:none;">VIP</span>
         </div>
@@ -708,7 +382,7 @@
     </section>
 
     <div class="grid">
-      <!-- SOL TARAF: KARŞILAMA + FORM -->
+      <!-- SOL: KARŞILAMA + FORM -->
       <section class="card">
         <div class="card-header">
           <div>
@@ -717,7 +391,7 @@
             </div>
             <p class="card-subtitle">Günün saatine göre dinamik mesaj.</p>
           </div>
-          <span id="roleInfo" class="badge-role"></span>
+          <span id="roleInfo" class="badge-role-info"></span>
         </div>
 
         <div class="greeting" id="greetingText">Merhaba!</div>
@@ -771,33 +445,24 @@
 
           <div class="field">
             <label for="link">İçerik linki</label>
-            <input
-              type="url"
-              id="link"
-              placeholder="https:// ..."
-              required
-            />
+            <input type="url" id="link" placeholder="https:// ..." required />
             <div class="hint">İşlem yapılacak gönderi / profil linki.</div>
           </div>
 
           <div class="field">
             <label for="notes">Not (opsiyonel)</label>
-            <textarea
-              id="notes"
-              placeholder="Örn: Sadece son videoya izlenme gelsin, eski içeriklere gerek yok."
-            ></textarea>
+            <textarea id="notes" placeholder="Örn: Sadece son videoya izlenme gelsin."></textarea>
           </div>
 
           <div class="error-text" id="formError" style="display:none;"></div>
 
           <button class="btn-primary" type="submit" id="submitBtn">
-            <span class="icon">🚀</span>
-            Talebi Gönder
+            <span class="icon">🚀</span> Talebi Gönder
           </button>
         </form>
       </section>
 
-      <!-- SAĞ TARAF: SUNUCU DURUMU + TALEPLER -->
+      <!-- SAĞ: SUNUCU DURUMU + TALEPLER -->
       <section class="card">
         <div class="card-header">
           <div>
@@ -826,71 +491,30 @@
     </div>
   </div>
 
-  <!-- Firebase & JS -->
   <script type="module">
-    // ========= SAAT, KARŞILAMA =========
+    // Saat & selamlama
     const clockText = document.getElementById("clockText");
     const greetingText = document.getElementById("greetingText");
     const greetingSubText = document.getElementById("greetingSubText");
-    const userNameLabel = document.getElementById("userNameLabel");
-    const userAvatar = document.getElementById("userAvatar");
-    const vipBadge = document.getElementById("vipBadge");
-    const roleInfo = document.getElementById("roleInfo");
-
-    const loginOverlay = document.getElementById("loginOverlay");
-    const loginNameInput = document.getElementById("loginNameInput");
-    const loginBtn = document.getElementById("loginBtn");
-    const loginError = document.getElementById("loginError");
-
-    function formatTwo(n) {
-      return n < 10 ? "0" + n : n;
+    function two(n){return n<10?"0"+n:n;}
+    function updateClock(){
+      const now=new Date();
+      const h=now.getHours(), m=now.getMinutes();
+      clockText.textContent=`${two(h)}:${two(m)}`;
+      let main="Merhaba!", sub="Taleplerini detaylı doldur, biz de süreci şeffaf şekilde takip edelim.";
+      if(h>=5&&h<12){main="Günaydın ☀️";sub="Sabah erken saatler, işlemler genelde daha hızlı tamamlanır.";}
+      else if(h>=12&&h<18){main="İyi günler 🌤️";sub="Öğlen trafiği yoğun olabilir ama talepler sırayla işlenir.";}
+      else if(h>=18&&h<23){main="İyi akşamlar 🌙";sub="Akşam talepleri genelde yoğunluk durumuna göre işlenir.";}
+      else{main="Gece modu 🌌";sub="Gece gönderilen talepler bir sonraki mesai başlangıcında öncelikli işlenebilir.";}
+      greetingText.textContent=main; greetingSubText.textContent=sub;
     }
+    setInterval(updateClock,1000); updateClock();
 
-    function updateClockAndGreeting() {
-      const now = new Date();
-      const h = now.getHours();
-      const m = now.getMinutes();
-      clockText.textContent = `${formatTwo(h)}:${formatTwo(m)}`;
-
-      let main = "Merhaba!";
-      let sub = "Taleplerini detaylı doldur, biz de süreci şeffaf şekilde takip edelim.";
-
-      if (h >= 5 && h < 12) {
-        main = "Günaydın ☀️";
-        sub = "Sabah erken saatler, işlemler genelde daha hızlı tamamlanır.";
-      } else if (h >= 12 && h < 18) {
-        main = "İyi günler 🌤️";
-        sub = "Öğlen trafiği yoğun olabilir ama talepler sırayla işlenir.";
-      } else if (h >= 18 && h < 23) {
-        main = "İyi akşamlar 🌙";
-        sub = "Akşam talepleri genelde yoğunluk durumuna göre işlenir.";
-      } else {
-        main = "Gece modu 🌌";
-        sub = "Gece gönderilen talepler bir sonraki mesai başlangıcında öncelikli işlenebilir.";
-      }
-
-      greetingText.textContent = main;
-      greetingSubText.textContent = sub;
-    }
-
-    setInterval(updateClockAndGreeting, 1000);
-    updateClockAndGreeting();
-
-    // ========= Firebase =========
+    // Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
     import {
-      initializeApp
-    } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
-    import {
-      getFirestore,
-      collection,
-      addDoc,
-      serverTimestamp,
-      onSnapshot,
-      query,
-      orderBy,
-      doc,
-      getDoc,
-      setDoc
+      getFirestore, collection, addDoc, serverTimestamp,
+      onSnapshot, query, orderBy, doc, getDoc, setDoc
     } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -902,399 +526,296 @@
       appId: "1:367542295102:web:5d482d7434193f1ef14f6f",
       measurementId: "G-3MBQW29YRD"
     };
-
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const requestsCol = collection(db, "requests");
-    const settingsDocRef = doc(db, "config", "settings");
+    const requestsCol = collection(db,"requests");
+    const settingsDocRef = doc(db,"config","settings");
 
-    const requestForm = document.getElementById("requestForm");
-    const formError = document.getElementById("formError");
-    const submitBtn = document.getElementById("submitBtn");
+    // Kullanıcı state (sadece RAM'de)
+    let currentUser = { id:null, name:"Misafir", role:"user" };
+    const userNameLabel=document.getElementById("userNameLabel");
+    const userAvatar=document.getElementById("userAvatar");
+    const vipBadge=document.getElementById("vipBadge");
+    const roleInfo=document.getElementById("roleInfo");
 
-    // ========= USER STATE =========
-    let currentUser = {
-      id: null,
-      name: "Misafir",
-      role: "user"
-    };
-
-    function slugifyName(name) {
-      return name.trim().toLowerCase().replace(/\s+/g, "_");
-    }
-
-    function applyUserToUI() {
-      userNameLabel.textContent = currentUser.name || "Misafir";
-      userAvatar.textContent = (currentUser.name?.[0] || "M").toUpperCase();
-
-      if (currentUser.role === "vip") {
-        vipBadge.style.display = "inline-flex";
-        roleInfo.textContent = "Rolün: VIP kullanıcı";
-      } else if (currentUser.role === "banned") {
-        vipBadge.style.display = "none";
-        roleInfo.textContent = "Rolün: Yasaklı / işlem yapamaz";
-      } else {
-        vipBadge.style.display = "none";
-        roleInfo.textContent = "Rolün: Standart kullanıcı";
+    function applyUserToUI(){
+      userNameLabel.textContent=currentUser.name||"Misafir";
+      userAvatar.textContent=(currentUser.name?.[0]||"M").toUpperCase();
+      if(currentUser.role==="vip"){
+        vipBadge.style.display="inline-flex";
+        roleInfo.textContent="Rolün: VIP kullanıcı";
+      }else if(currentUser.role==="banned"){
+        vipBadge.style.display="none";
+        roleInfo.textContent="Rolün: Yasaklı / işlem yapamaz";
+      }else{
+        vipBadge.style.display="none";
+        roleInfo.textContent="Rolün: Standart kullanıcı";
       }
-
-      if (currentUser.role === "banned") {
-        requestForm.querySelectorAll("input, select, textarea, button[type='submit']")
-          .forEach(el => el.disabled = true);
-        formError.textContent = "Hesabın yönetici tarafından yasaklanmış. İşlem yapamazsın.";
-        formError.style.display = "block";
-      } else {
-        requestForm.querySelectorAll("input, select, textarea, button[type='submit']")
-          .forEach(el => el.disabled = false);
+      const form=document.getElementById("requestForm");
+      const formError=document.getElementById("formError");
+      if(currentUser.role==="banned"){
+        form.querySelectorAll("input,select,textarea,button[type='submit']")
+          .forEach(el=>el.disabled=true);
+        formError.textContent="Hesabın yönetici tarafından yasaklanmış. İşlem yapamazsın.";
+        formError.style.display="block";
+      }else{
+        form.querySelectorAll("input,select,textarea,button[type='submit']")
+          .forEach(el=>el.disabled=false);
       }
     }
 
-    async function loadUserFromFirestore(userId) {
-      const userDocRef = doc(db, "users", userId);
-      const snap = await getDoc(userDocRef);
-      if (!snap.exists()) {
-        throw new Error("User doc not found");
-      }
-      const data = snap.data();
-      currentUser = {
-        id: userId,
-        name: data.name || "Misafir",
-        role: data.role || "user"
-      };
-      localStorage.setItem("sp_user_id", currentUser.id);
-      localStorage.setItem("sp_user_name", currentUser.name);
-      localStorage.setItem("sp_user_role", currentUser.role);
-      applyUserToUI();
+    function slugifyName(name){
+      return name.trim().toLowerCase().replace(/\s+/g,"_");
     }
 
-    async function handleLogin(name) {
-      const trimmed = name.trim();
-      if (!trimmed) {
-        throw new Error("Lütfen geçerli bir isim gir.");
-      }
-      const userId = slugifyName(trimmed);
-      const userDocRef = doc(db, "users", userId);
-      const snap = await getDoc(userDocRef);
+    // Login overlay
+    const loginOverlay=document.getElementById("loginOverlay");
+    const loginNameInput=document.getElementById("loginNameInput");
+    const loginBtn=document.getElementById("loginBtn");
+    const loginError=document.getElementById("loginError");
 
-      if (!snap.exists()) {
-        // yeni kullanıcı
-        await setDoc(userDocRef, {
-          name: trimmed,
-          role: "user",
-          createdAt: serverTimestamp()
-        });
-        currentUser = { id: userId, name: trimmed, role: "user" };
-      } else {
-        const data = snap.data();
-        currentUser = {
-          id: userId,
-          name: data.name || trimmed,
-          role: data.role || "user"
+    async function handleLogin(name){
+      const trimmed=name.trim();
+      if(!trimmed) throw new Error("Lütfen geçerli bir isim gir.");
+      const userId=slugifyName(trimmed);
+      const userDocRef=doc(db,"users",userId);
+      const snap=await getDoc(userDocRef);
+      if(!snap.exists()){
+        await setDoc(userDocRef,{name:trimmed,role:"user",createdAt:serverTimestamp()});
+        currentUser={id:userId,name:trimmed,role:"user"};
+      }else{
+        const data=snap.data();
+        currentUser={
+          id:userId,
+          name:data.name||trimmed,
+          role:data.role||"user"
         };
       }
-
-      localStorage.setItem("sp_user_id", currentUser.id);
-      localStorage.setItem("sp_user_name", currentUser.name);
-      localStorage.setItem("sp_user_role", currentUser.role);
       applyUserToUI();
     }
 
-    // İlk açılışta localStorage kontrolü
-    (async () => {
-      const savedId = localStorage.getItem("sp_user_id");
-      const savedName = localStorage.getItem("sp_user_name");
-      const savedRole = localStorage.getItem("sp_user_role");
-
-      if (savedId && savedName) {
-        // Firestore'dan güncel rolü de çek
-        try {
-          await loadUserFromFirestore(savedId);
-          loginOverlay.style.display = "none";
-        } catch (err) {
-          console.warn("Kayıtlı kullanıcı bulunamadı, tekrar giriş alınacak.", err);
-          loginOverlay.style.display = "flex";
-        }
-      } else {
-        loginOverlay.style.display = "flex";
-      }
-    })();
-
-    loginBtn.addEventListener("click", async () => {
-      loginError.style.display = "none";
-      const name = loginNameInput.value;
-      if (!name.trim()) {
-        loginError.textContent = "Lütfen bir isim gir.";
-        loginError.style.display = "block";
+    loginBtn.addEventListener("click", async ()=>{
+      loginError.style.display="none";
+      const name=loginNameInput.value;
+      if(!name.trim()){
+        loginError.textContent="Lütfen bir isim gir.";
+        loginError.style.display="block";
         return;
       }
-      loginBtn.disabled = true;
-      loginBtn.textContent = "Kontrol ediliyor...";
-
-      try {
+      loginBtn.disabled=true;
+      loginBtn.textContent="Kontrol ediliyor...";
+      try{
         await handleLogin(name);
-        loginOverlay.style.display = "none";
-      } catch (err) {
+        loginOverlay.style.display="none";
+      }catch(err){
         console.error(err);
-        loginError.textContent = err.message || "Giriş sırasında bir hata oluştu.";
-        loginError.style.display = "block";
-      } finally {
-        loginBtn.disabled = false;
-        loginBtn.textContent = "Giriş yap";
+        loginError.textContent=err.message||"Giriş sırasında bir hata oluştu.";
+        loginError.style.display="block";
+      }finally{
+        loginBtn.disabled=false;
+        loginBtn.textContent="Giriş yap";
       }
     });
+    loginNameInput.addEventListener("keyup",e=>{if(e.key==="Enter")loginBtn.click();});
 
-    loginNameInput.addEventListener("keyup", (e) => {
-      if (e.key === "Enter") {
-        loginBtn.click();
-      }
-    });
+    // Form gönderme
+    const requestForm=document.getElementById("requestForm");
+    const formError=document.getElementById("formError");
+    const submitBtn=document.getElementById("submitBtn");
 
-    // ========= FORM GÖNDERME =========
-    requestForm.addEventListener("submit", async (e) => {
+    requestForm.addEventListener("submit",async e=>{
       e.preventDefault();
-      formError.style.display = "none";
-
-      if (!currentUser.id) {
-        formError.textContent = "Önce kullanıcı girişi yapmalısın.";
-        formError.style.display = "block";
-        loginOverlay.style.display = "flex";
+      formError.style.display="none";
+      if(!currentUser.id){
+        formError.textContent="Önce kullanıcı girişi yapmalısın.";
+        formError.style.display="block";
+        loginOverlay.style.display="flex";
         return;
       }
-      if (currentUser.role === "banned") {
-        formError.textContent = "Hesabın yasaklı olduğu için işlem yapamazsın.";
-        formError.style.display = "block";
+      if(currentUser.role==="banned"){
+        formError.textContent="Hesabın yasaklı olduğu için işlem yapamazsın.";
+        formError.style.display="block";
+        return;
+      }
+      const platform=document.getElementById("platform").value;
+      const serviceType=document.getElementById("serviceType").value;
+      const quantity=document.getElementById("quantity").value;
+      const priority=document.getElementById("priority").value;
+      const link=document.getElementById("link").value.trim();
+      const notes=document.getElementById("notes").value.trim();
+
+      if(!link||!platform||!serviceType||!quantity){
+        formError.textContent="Lütfen zorunlu alanları doldurun.";
+        formError.style.display="block";
         return;
       }
 
-      const platform = document.getElementById("platform").value;
-      const serviceType = document.getElementById("serviceType").value;
-      const quantity = document.getElementById("quantity").value;
-      const priority = document.getElementById("priority").value;
-      const link = document.getElementById("link").value.trim();
-      const notes = document.getElementById("notes").value.trim();
+      submitBtn.disabled=true;
+      submitBtn.textContent="Gönderiliyor...";
 
-      if (!link || !platform || !serviceType || !quantity) {
-        formError.textContent = "Lütfen zorunlu alanları doldurun.";
-        formError.style.display = "block";
-        return;
-      }
-
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Gönderiliyor...";
-
-      try {
-        await addDoc(requestsCol, {
-          userId: currentUser.id,
-          userName: currentUser.name,
-          userRole: currentUser.role,
+      try{
+        await addDoc(requestsCol,{
+          userId:currentUser.id,
+          userName:currentUser.name,
+          userRole:currentUser.role,
           platform,
           serviceType,
-          quantity: Number(quantity),
+          quantity:Number(quantity),
           priority,
           link,
           notes,
-          status: "hazirlaniyor",
-          createdAt: serverTimestamp()
+          status:"hazirlaniyor",
+          createdAt:serverTimestamp()
         });
-
         requestForm.reset();
-        formError.style.display = "none";
-      } catch (err) {
+      }catch(err){
         console.error(err);
-        formError.textContent = "Bir hata oluştu. Lütfen tekrar deneyin.";
-        formError.style.display = "block";
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = '<span class="icon">🚀</span> Talebi Gönder';
+        formError.textContent="Bir hata oluştu. Lütfen tekrar deneyin.";
+        formError.style.display="block";
+      }finally{
+        submitBtn.disabled=false;
+        submitBtn.innerHTML="<span class='icon'>🚀</span> Talebi Gönder";
       }
     });
 
-    // ========= TALEPLERİ LİSTELE =========
-    const requestsContainer = document.getElementById("requestsContainer");
-    const metricQueue = document.getElementById("metricQueue");
-    const metricInProgress = document.getElementById("metricInProgress");
-    const metricCompleted = document.getElementById("metricCompleted");
+    // Talepleri listele
+    const requestsContainer=document.getElementById("requestsContainer");
+    const metricQueue=document.getElementById("metricQueue");
+    const metricInProgress=document.getElementById("metricInProgress");
+    const metricCompleted=document.getElementById("metricCompleted");
 
-    const qRequests = query(requestsCol, orderBy("createdAt", "desc"));
+    const qRequests=query(requestsCol,orderBy("createdAt","desc"));
 
-    onSnapshot(qRequests, (snapshot) => {
-      if (snapshot.empty) {
-        requestsContainer.innerHTML = '<div class="request-empty">Henüz bir talep yok.</div>';
-        metricQueue.textContent = "Bekleyen talep: 0";
-        metricInProgress.textContent = "İşleniyor: 0";
-        metricCompleted.textContent = "Tamamlandı: 0";
+    onSnapshot(qRequests,snapshot=>{
+      if(snapshot.empty){
+        requestsContainer.innerHTML='<div class="request-empty">Henüz bir talep yok.</div>';
+        metricQueue.textContent="Bekleyen talep: 0";
+        metricInProgress.textContent="İşleniyor: 0";
+        metricCompleted.textContent="Tamamlandı: 0";
         return;
       }
-
-      let html = "";
-      let countQueue = 0;
-      let countProgress = 0;
-      let countDone = 0;
-
-      snapshot.forEach((docSnap) => {
-        const d = docSnap.data();
-        const status = d.status || "hazirlaniyor";
-
-        if (status === "hazirlaniyor") countQueue++;
-        else if (status === "gonderiliyor" || status === "isleniyor") countProgress++;
-        else if (status === "tamamlandi") countDone++;
-
-        html += renderRequestItem(docSnap.id, d);
+      let html=""; let cQ=0,cP=0,cD=0;
+      snapshot.forEach(docSnap=>{
+        const d=docSnap.data();
+        const st=d.status||"hazirlaniyor";
+        if(st==="hazirlaniyor")cQ++;
+        else if(st==="gonderiliyor"||st==="isleniyor")cP++;
+        else if(st==="tamamlandi")cD++;
+        html+=renderRequestItem(docSnap.id,d);
       });
-
-      requestsContainer.innerHTML = html;
-      metricQueue.textContent = `Bekleyen talep: ${countQueue}`;
-      metricInProgress.textContent = `İşleniyor: ${countProgress}`;
-      metricCompleted.textContent = `Tamamlandı: ${countDone}`;
+      requestsContainer.innerHTML=html;
+      metricQueue.textContent=`Bekleyen talep: ${cQ}`;
+      metricInProgress.textContent=`İşleniyor: ${cP}`;
+      metricCompleted.textContent=`Tamamlandı: ${cD}`;
     });
 
-    function statusBadgeClass(status) {
-      switch (status) {
-        case "hazirlaniyor":
-          return "badge-status-hazirlaniyor";
+    function statusBadgeClass(status){
+      switch(status){
+        case "hazirlaniyor":return "badge-status-hazirlaniyor";
         case "gonderiliyor":
-        case "isleniyor":
-          return "badge-status-gonderiliyor";
-        case "kontrolde":
-          return "badge-status-kontrol";
-        case "tamamlandi":
-          return "badge-status-tamamlandi";
-        default:
-          return "";
+        case "isleniyor":return "badge-status-gonderiliyor";
+        case "kontrolde":return "badge-status-kontrol";
+        case "tamamlandi":return "badge-status-tamamlandi";
+        default:return "";
       }
     }
-
-    function statusText(status) {
-      switch (status) {
-        case "hazirlaniyor":
-          return "Hazırlanıyor";
+    function statusText(status){
+      switch(status){
+        case "hazirlaniyor":return "Hazırlanıyor";
         case "gonderiliyor":
-        case "isleniyor":
-          return "Gönderiliyor / İşleniyor";
-        case "kontrolde":
-          return "Yönetici kontrolünde";
-        case "tamamlandi":
-          return "Tamamlandı";
-        default:
-          return "Bilinmiyor";
+        case "isleniyor":return "Gönderiliyor / İşleniyor";
+        case "kontrolde":return "Yönetici kontrolünde";
+        case "tamamlandi":return "Tamamlandı";
+        default:return "Bilinmiyor";
       }
     }
+    function renderRequestItem(id,d){
+      const createdAt=d.createdAt?.toDate ? d.createdAt.toDate():null;
+      let timeText="";
+      if(createdAt){
+        timeText=`${two(createdAt.getDate())}.${two(createdAt.getMonth()+1)} • ${two(createdAt.getHours())}:${two(createdAt.getMinutes())}`;
+      }else timeText="Tarih bekleniyor...";
 
-    function renderRequestItem(id, d) {
-      const createdAt = d.createdAt?.toDate
-        ? d.createdAt.toDate()
-        : null;
-
-      let timeText = "";
-      if (createdAt) {
-        const day = formatTwo(createdAt.getDate());
-        const month = formatTwo(createdAt.getMonth() + 1);
-        const hour = formatTwo(createdAt.getHours());
-        const minute = formatTwo(createdAt.getMinutes());
-        timeText = `${day}.${month} • ${hour}:${minute}`;
-      } else {
-        timeText = "Tarih bekleniyor...";
-      }
-
-      const stClass = statusBadgeClass(d.status);
-      const stText = statusText(d.status);
-      const role = d.userRole || "user";
-
-      const roleChip =
-        role === "vip"
-          ? `<span class="badge" style="border-color:rgba(250,204,21,0.8);background:rgba(250,204,21,0.08);color:#facc15;">VIP</span>`
-          : "";
+      const stClass=statusBadgeClass(d.status);
+      const stText=statusText(d.status);
+      const role=d.userRole||"user";
+      const roleChip=role==="vip"
+        ? `<span class="badge" style="border-color:rgba(250,204,21,0.8);background:rgba(250,204,21,0.08);color:#facc15;">VIP</span>`
+        : "";
 
       return `
         <div class="request-item">
           <div>
             <div class="request-meta">
-              <span class="badge badge-platform">${d.platform} • ${d.serviceType}</span>
-              <span class="badge">Adet: ${d.quantity || "-"}</span>
-              <span class="badge">Öncelik: ${d.priority || "Normal"}</span>
+              <span class="badge badge-platform">${d.platform||"-"} • ${d.serviceType||"-"}</span>
+              <span class="badge">Adet: ${d.quantity||"-"}</span>
+              <span class="badge">Öncelik: ${d.priority||"Normal"}</span>
               ${roleChip}
             </div>
-            ${
-              d.notes
-                ? `<div class="request-notes">${d.notes}</div>`
-                : ""
-            }
+            ${d.notes ? `<div class="request-notes">${d.notes}</div>` : ""}
           </div>
-
           <div class="request-link">
             <div class="small-label">Link</div>
             <a href="${d.link}" target="_blank" rel="noopener noreferrer">${d.link}</a>
             <div class="small-label" style="margin-top:6px;">Talep sahibi</div>
-            <div>${d.userName || "Bilinmiyor"}</div>
+            <div>${d.userName||"Bilinmiyor"}</div>
           </div>
-
-          <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
-            <span class="badge ${stClass}">
-              ${stText}
-            </span>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+            <span class="badge ${stClass}">${stText}</span>
             <div class="request-time">${timeText}</div>
           </div>
         </div>
       `;
     }
 
-    // ========= AYARLAR / DUYURU / SUNUCU DURUMU =========
-    const serverStatusPill = document.getElementById("serverStatusPill");
-    const serverStatusText = document.getElementById("serverStatusText");
-    const announcementBox = document.getElementById("announcementBox");
-    const announcementTitle = document.getElementById("announcementTitle");
-    const announcementText = document.getElementById("announcementText");
-    const announcementUpdated = document.getElementById("announcementUpdated");
+    // Ayarlar / duyuru
+    const serverStatusPill=document.getElementById("serverStatusPill");
+    const serverStatusText=document.getElementById("serverStatusText");
+    const announcementBox=document.getElementById("announcementBox");
+    const announcementTitle=document.getElementById("announcementTitle");
+    const announcementText=document.getElementById("announcementText");
+    const announcementUpdated=document.getElementById("announcementUpdated");
 
-    async function loadSettings() {
-      try {
-        const snap = await getDoc(settingsDocRef);
-        if (!snap.exists()) {
-          announcementBox.style.display = "none";
-          serverStatusText.textContent = "Durum bilinmiyor";
+    async function loadSettings(){
+      try{
+        const snap=await getDoc(settingsDocRef);
+        if(!snap.exists()){
+          announcementBox.style.display="none";
+          serverStatusText.textContent="Durum bilinmiyor";
           serverStatusPill.classList.add("offline");
           return;
         }
-        const data = snap.data();
-
-        const status = data.serverStatus || "offline";
-        const msg = data.serverStatusMessage || "";
-        if (status === "online") {
+        const data=snap.data();
+        const status=data.serverStatus||"offline";
+        const msg=data.serverStatusMessage||"";
+        if(status==="online"){
           serverStatusPill.classList.remove("offline");
-          serverStatusText.textContent = msg || "Sunucu aktif";
-        } else if (status === "maintenance") {
+          serverStatusText.textContent=msg||"Sunucu aktif";
+        }else if(status==="maintenance"){
           serverStatusPill.classList.add("offline");
-          serverStatusText.textContent = msg || "Sunucu bakımda";
-        } else {
+          serverStatusText.textContent=msg||"Sunucu bakımda";
+        }else{
           serverStatusPill.classList.add("offline");
-          serverStatusText.textContent = msg || "Sunucu offline / bakımda";
+          serverStatusText.textContent=msg||"Sunucu offline / bakımda";
         }
-
-        if (data.announcementText) {
-          announcementBox.style.display = "flex";
-          announcementTitle.textContent = data.announcementTitle || "Duyuru";
-          announcementText.textContent = data.announcementText;
-          if (data.announcementUpdatedAt?.toDate) {
-            const dt = data.announcementUpdatedAt.toDate();
-            const d = formatTwo(dt.getDate());
-            const m = formatTwo(dt.getMonth() + 1);
-            const h = formatTwo(dt.getHours());
-            const mm = formatTwo(dt.getMinutes());
-            announcementUpdated.textContent = `Güncellendi: ${d}.${m} • ${h}:${mm}`;
-          } else {
-            announcementUpdated.textContent = "";
-          }
-        } else {
-          announcementBox.style.display = "none";
+        if(data.announcementText){
+          announcementBox.style.display="flex";
+          announcementTitle.textContent=data.announcementTitle||"Duyuru";
+          announcementText.textContent=data.announcementText;
+          if(data.announcementUpdatedAt?.toDate){
+            const dt=data.announcementUpdatedAt.toDate();
+            announcementUpdated.textContent=`Güncellendi: ${two(dt.getDate())}.${two(dt.getMonth()+1)} • ${two(dt.getHours())}:${two(dt.getMinutes())}`;
+          }else announcementUpdated.textContent="";
+        }else{
+          announcementBox.style.display="none";
         }
-      } catch (err) {
-        console.error("Ayarlar okunamadı", err);
-        serverStatusText.textContent = "Durum okunamadı";
+      }catch(err){
+        console.error("Ayarlar okunamadı",err);
+        serverStatusText.textContent="Durum okunamadı";
         serverStatusPill.classList.add("offline");
       }
     }
-
     loadSettings();
   </script>
 </body>
